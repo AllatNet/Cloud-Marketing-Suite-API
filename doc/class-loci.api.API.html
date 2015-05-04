@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class loci\api\API</title>
+
+	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+				<h3>Namespaces</h3>
+			<ul>
+				<li class="active">
+					<a href="namespace-loci.html">
+						loci<span></span>
+					</a>
+
+						<ul>
+				<li class="active">
+					<a href="namespace-loci.api.html">
+						api<span></span>
+					</a>
+
+						<ul>
+				<li>
+					<a href="namespace-loci.api.lib.html">
+						lib					</a>
+
+						</li>
+							</ul></li></ul></li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-loci.api.API.html">API</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text" placeholder="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="namespace-loci.api.html" title="Summary of loci\api"><span>Namespace</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class API</h1>
+
+
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		<b>Namespace:</b> <a href="namespace-loci.html">loci</a>\<a href="namespace-loci.api.html">api</a><br>
+		
+
+			<b>Located at</b> <a href="source-class-loci.api.API.html#20-244" title="Go to source code">API.php</a>
+		<br>
+	</div>
+
+
+
+	<table class="summary methods" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-loci.api.API.html#48-60" title="Go to source code">__construct</a>( <span>string <var>$token</var></span> )</code>
+
+		<div class="description short">
+			<p>Initialisiert die Schnittstelle. Jede Schnittstellenabfrage läuft über diese Instanz.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Initialisiert die Schnittstelle. Jede Schnittstellenabfrage läuft über diese Instanz.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$token</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isDev" id="_isDev">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isDev">#</a>
+		<code><a href="source-class-loci.api.API.html#62-68" title="Go to source code">isDev</a>( <span>boolean <var>$dev</var> = <span class="php-keyword1">false</span></span> )</code>
+
+		<div class="description short">
+			<p>Wenn True gesetzt wird, wird die Entwicklungsumgebung abgefragt</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Wenn True gesetzt wird, wird die Entwicklungsumgebung abgefragt</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$dev</var></dt>
+					<dd></dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getAktionsDaten" id="_getAktionsDaten">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getAktionsDaten">#</a>
+		<code><a href="source-class-loci.api.API.html#70-84" title="Go to source code">getAktionsDaten</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span> )</code>
+
+		<div class="description short">
+			<p>Holt die Aktionsdaten zu einem Teilnehmer.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Holt die Aktionsdaten zu einem Teilnehmer.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$teilnehmer</var></dt>
+					<dd></dd>
+					<dt><var>$idAktion</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					array
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setAktionsDaten" id="_setAktionsDaten">
+
+		<td class="attributes"><code>
+			 public 
+
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setAktionsDaten">#</a>
+		<code><a href="source-class-loci.api.API.html#86-100" title="Go to source code">setAktionsDaten</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span>, <span>array <var>$aktionsDaten</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$teilnehmer</var></dt>
+					<dd></dd>
+					<dt><var>$idAktion</var></dt>
+					<dd></dd>
+					<dt><var>$aktionsDaten</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					array
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="updateTeilnehmer" id="_updateTeilnehmer">
+
+		<td class="attributes"><code>
+			 public 
+
+			<code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_updateTeilnehmer">#</a>
+		<code><a href="source-class-loci.api.API.html#102-117" title="Go to source code">updateTeilnehmer</a>( <span>array <var>$data</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$data</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code>
+				</div>
+
+				<h4>Throws</h4>
+				<div class="list">
+					Exception
+				</div>
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getTeilnehmer" id="_getTeilnehmer">
+
+		<td class="attributes"><code>
+			 public 
+
+			<code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getTeilnehmer">#</a>
+		<code><a href="source-class-loci.api.API.html#119-130" title="Go to source code">getTeilnehmer</a>( <span>array <var>$data</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$data</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getAktion" id="_getAktion">
+
+		<td class="attributes"><code>
+			 public 
+
+			<code><a href="class-loci.api.lib.Aktion.html">loci\api\lib\Aktion</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getAktion">#</a>
+		<code><a href="source-class-loci.api.API.html#132-142" title="Go to source code">getAktion</a>( <span>integer <var>$idAktion</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$idAktion</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-loci.api.lib.Aktion.html">loci\api\lib\Aktion</a></code>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getKampagne" id="_getKampagne">
+
+		<td class="attributes"><code>
+			 public 
+
+			<code><a href="class-loci.api.lib.Kampagne.html">loci\api\lib\Kampagne</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getKampagne">#</a>
+		<code><a href="source-class-loci.api.API.html#144-154" title="Go to source code">getKampagne</a>( <span>integer <var>$idKampagne</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$idKampagne</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-loci.api.lib.Kampagne.html">loci\api\lib\Kampagne</a></code>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getPartner" id="_getPartner">
+
+		<td class="attributes"><code>
+			 public 
+
+			<code><a href="class-loci.api.lib.Partner.html">loci\api\lib\Partner</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getPartner">#</a>
+		<code><a href="source-class-loci.api.API.html#156-166" title="Go to source code">getPartner</a>( <span>integer <var>$idPartner</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$idPartner</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-loci.api.lib.Partner.html">loci\api\lib\Partner</a></code>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getKunde" id="_getKunde">
+
+		<td class="attributes"><code>
+			 public 
+
+			<code><a href="class-loci.api.lib.Kunde.html">loci\api\lib\Kunde</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getKunde">#</a>
+		<code><a href="source-class-loci.api.API.html#168-178" title="Go to source code">getKunde</a>( <span>integer <var>$idKunde</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$idKunde</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-loci.api.lib.Kunde.html">loci\api\lib\Kunde</a></code>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getMandant" id="_getMandant">
+
+		<td class="attributes"><code>
+			 public 
+
+			<code><a href="class-loci.api.lib.Mandant.html">loci\api\lib\Mandant</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getMandant">#</a>
+		<code><a href="source-class-loci.api.API.html#180-188" title="Go to source code">getMandant</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><a href="class-loci.api.lib.Mandant.html">loci\api\lib\Mandant</a></code>
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>
