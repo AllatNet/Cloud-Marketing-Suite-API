@@ -2,14 +2,14 @@
 
 require(__DIR__.'/api/API.php');
 
-$api = new \loci\api\API('9097b7c946794856508f05e3506d9bfb');
+$api = new \loci\api\API('9405205982830810d21939b2a3f0ec3e');
 
 ?>
 	<h1>API-Test</h1>
 	<table>
 		<tr>
 			<td>API-Token</td>
-			<td>9097b7c946794856508f05e3506d9bfb</td>
+			<td>9405205982830810d21939b2a3f0ec3e</td>
 		</tr>
 	</table>
 	<a href="#Mandant">Mandant</a><br/>

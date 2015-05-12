@@ -66,7 +66,7 @@ class API {
 	 * @param bool $dev
 	 */
 	public function isDev($dev = false) {
-		$this->dev = $dev;
+		$this->dev = (boolean)$dev;
 	}
 
 	/**
