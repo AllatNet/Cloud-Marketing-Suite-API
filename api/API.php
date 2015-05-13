@@ -52,12 +52,12 @@ class API {
 	 * @param string $token
 	 */
 	public function __construct($token) {
-		require(__DIR__.'/lib/Aktion.php');
-		require(__DIR__.'/lib/Kampagne.php');
-		require(__DIR__.'/lib/Kunde.php');
-		require(__DIR__.'/lib/Mandant.php');
-		require(__DIR__.'/lib/Partner.php');
-		require(__DIR__.'/lib/Teilnehmer.php');
+		require_once(__DIR__.'/lib/Aktion.php');
+		require_once(__DIR__.'/lib/Kampagne.php');
+		require_once(__DIR__.'/lib/Kunde.php');
+		require_once(__DIR__.'/lib/Mandant.php');
+		require_once(__DIR__.'/lib/Partner.php');
+		require_once(__DIR__.'/lib/Teilnehmer.php');
 		$this->token = $token;
 	}
 
