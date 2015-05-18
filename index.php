@@ -1,8 +1,12 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
+
 require(__DIR__.'/api/API.php');
 
-$api = new \loci\api\API('9405205982830810d21939b2a3f0ec3e');
+$api = new \loci\api\API('9097b7c946794s856508f05e3506d9bfb');
+$api->isDev(true);
 
 ?>
 	<h1>API-Test</h1>
@@ -56,7 +60,7 @@ echo '</pre>';
 	<h2 id="Teilnehmer">Teilnehmer</h2>
 <?php
 echo '<pre>';
-$teilnehmer = $api->getTeilnehmer(['email' => 'christian@hoefer-web.net']);
+$teilnehmer = $api->getTeilnehmer(['email' => 'ch@allatnet.de']);
 print_r($teilnehmer);
 //print_r($api->getTeilnehmer(['_idInternal'=>['idAction'=>21]]));
 //print_r($api->getTeilnehmer(['_id'=>'553958b71f03ad08238b4567']));

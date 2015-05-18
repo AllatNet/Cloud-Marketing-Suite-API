@@ -13,13 +13,15 @@ namespace loci\api;
 
 
 use loci\api\lib\Aktion;
+use loci\api\lib\ApiException;
 use loci\api\lib\Kampagne;
 use loci\api\lib\Kunde;
 use loci\api\lib\Mandant;
 use loci\api\lib\Partner;
 use loci\api\lib\Teilnehmer;
 
-class API {
+class API
+{
 
 	/**
 	 * Entscheidet ob die Live oder die Entwicklungsumgebung abgefragt werden soll. Wird über isDev() bedient.
@@ -49,6 +51,7 @@ class API {
 
 	/**
 	 * Initialisiert die Schnittstelle. Jede Schnittstellenabfrage läuft über diese Instanz.
+	 *
 	 * @param string $token
 	 */
 	public function __construct($token) {
@@ -58,11 +61,13 @@ class API {
 		require_once(__DIR__.'/lib/Mandant.php');
 		require_once(__DIR__.'/lib/Partner.php');
 		require_once(__DIR__.'/lib/Teilnehmer.php');
+		require_once(__DIR__.'/lib/ApiException.php');
 		$this->token = $token;
 	}
 
 	/**
 	 * Wenn True gesetzt wird, wird die Entwicklungsumgebung abgefragt
+	 *
 	 * @param bool $dev
 	 */
 	public function isDev($dev = false) {
@@ -71,33 +76,36 @@ class API {
 
 	/**
 	 * Holt die Aktionsdaten zu einem Teilnehmer.
+	 *
 	 * @param \loci\api\lib\Teilnehmer $teilnehmer
-	 * @param integer $idAktion
+	 * @param integer                  $idAktion
 	 *
 	 * @return array
 	 * @throws \Exception
 	 */
 	public function getAktionsDaten($teilnehmer, $idAktion) {
-		if(!$teilnehmer instanceof Teilnehmer){
+		if (!$teilnehmer instanceof Teilnehmer) {
 			throw new \Exception('Attribut 1 muss ein Objekt vom Typ "Teilnehmer" sein.');
 		}
-		$data = $this->request(['idAktion'=>$idAktion, 'tln'=>$teilnehmer->attributes['_id']]);
+		$data = $this->request(['idAktion' => $idAktion, 'tln' => $teilnehmer->attributes['_id']]);
+
 		return (array)json_decode($data);
 	}
 
 	/**
 	 * @param \loci\api\lib\Teilnehmer $teilnehmer
-	 * @param integer $idAktion
-	 * @param array $aktionsDaten
+	 * @param integer                  $idAktion
+	 * @param array                    $aktionsDaten
 	 *
 	 * @return array
 	 * @throws \Exception
 	 */
 	public function setAktionsDaten($teilnehmer, $idAktion, $aktionsDaten) {
-		if(!$teilnehmer instanceof Teilnehmer){
+		if (!$teilnehmer instanceof Teilnehmer) {
 			throw new \Exception('Attribut 1 muss ein Objekt vom Typ "Teilnehmer" sein.');
 		}
-		$data = $this->request(['idAktion'=>$idAktion, 'aktionsDaten'=>$aktionsDaten, 'tln'=>$teilnehmer->attributes['_id']]);
+		$data = $this->request(['idAktion' => $idAktion, 'aktionsDaten' => $aktionsDaten, 'tln' => $teilnehmer->attributes['_id']]);
+
 		return $this->getAktionsDaten($teilnehmer, $idAktion);
 	}
 
@@ -108,13 +116,14 @@ class API {
 	 * @throws \Exception
 	 */
 	public function updateTeilnehmer($data) {
-		if(!$data instanceof Teilnehmer){
+		if (!$data instanceof Teilnehmer) {
 			throw new \Exception('Attribut 1 muss ein Objekt vom Typ "Teilnehmer" sein.');
 		}
-		$data = $this->request($data->attributes);
-		$tln = new Teilnehmer();
-		$tln->token = $this->token;
+		$data            = $this->request($data->attributes);
+		$tln             = new Teilnehmer();
+		$tln->token      = $this->token;
 		$tln->attributes = (array)json_decode($data);
+
 		return $tln;
 	}
 
@@ -124,10 +133,11 @@ class API {
 	 * @return \loci\api\lib\Teilnehmer
 	 */
 	public function getTeilnehmer($data) {
-		$data = $this->request($data);
-		$tln = new Teilnehmer();
-		$tln->token = $this->token;
+		$data            = $this->request($data);
+		$tln             = new Teilnehmer();
+		$tln->token      = $this->token;
 		$tln->attributes = json_decode($data);
+
 		return $tln;
 	}
 
@@ -137,9 +147,10 @@ class API {
 	 * @return Aktion
 	 */
 	public function getAktion($idAktion) {
-		$data = $this->request(['idAktion'=>$idAktion]);
-		$aktion = new Aktion();
+		$data               = $this->request(['idAktion' => $idAktion]);
+		$aktion             = new Aktion();
 		$aktion->attributes = json_decode($data);
+
 		return $aktion;
 	}
 
@@ -149,9 +160,10 @@ class API {
 	 * @return Kampagne
 	 */
 	public function getKampagne($idKampagne) {
-		$data = $this->request(['idKampagne'=>$idKampagne]);
-		$kampagne = new Kampagne();
+		$data                 = $this->request(['idKampagne' => $idKampagne]);
+		$kampagne             = new Kampagne();
 		$kampagne->attributes = json_decode($data);
+
 		return $kampagne;
 	}
 
@@ -161,9 +173,10 @@ class API {
 	 * @return Partner
 	 */
 	public function getPartner($idPartner) {
-		$data = $this->request(['idPartner'=>$idPartner]);
-		$partner = new Partner();
+		$data                = $this->request(['idPartner' => $idPartner]);
+		$partner             = new Partner();
 		$partner->attributes = json_decode($data);
+
 		return $partner;
 	}
 
@@ -173,9 +186,10 @@ class API {
 	 * @return Kunde
 	 */
 	public function getKunde($idKunde) {
-		$data = $this->request(['idKunde'=>$idKunde]);
-		$kunde = new Kunde();
+		$data              = $this->request(['idKunde' => $idKunde]);
+		$kunde             = new Kunde();
 		$kunde->attributes = json_decode($data);
+
 		return $kunde;
 	}
 
@@ -183,21 +197,22 @@ class API {
 	 * @return Mandant
 	 */
 	public function getMandant() {
-		$data = $this->request();
-		$mandant = new Mandant();
+		$data                = $this->request();
+		$mandant             = new Mandant();
 		$mandant->attributes = json_decode($data);
+
 		return $mandant;
 	}
 
 	private function request($data = []) {
-		if($this->dev){
+		if ($this->dev) {
 			$host = $this->host_dev;
-		}else{
+		} else {
 			$host = $this->host_prod;
 		}
-		$ch = curl_init();
-		$callers=debug_backtrace();
-		switch($callers[1]['function']){
+		$ch      = curl_init();
+		$callers = debug_backtrace();
+		switch ($callers[1]['function']) {
 			case 'getAktionsDaten':
 				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&i='.$data['tln'].'&ai='.$data['idAktion']);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -237,10 +252,25 @@ class API {
 			default:
 				echo $callers[1]['function'];
 		}
-		$statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		session_write_close();
 		$return = curl_exec($ch);
+		if (!curl_errno($ch)) {
+			$responseHeader = curl_getinfo($ch);
+			if($responseHeader['http_code'] != 200){
+				$data = (array)json_decode($return);
+				$this->sendException($responseHeader['http_code'], $data['message']);
+			}
+		}
+		session_start();
+
 		curl_close($ch);
+
 		return $return;
+	}
+
+	private function sendException($code, $message) {
+		throw new ApiException($code, $message);
 	}
 
 }
