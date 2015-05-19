@@ -429,9 +429,13 @@ class API
 	 * $config = ['idAktion'=>$idAktion, '_id'=>'user-hash']
 	 * $teilnehmer = $api->getTeilnehmer($config);
 	 * $mailConfig = [
+	 *
 	 *    'from'=>'Name <from@example.com>',
+	 *
 	 *    'to'=>'Name <to@example.com>',
+	 *
 	 *    'subject'=>'Deine Registrierung',
+	 *
 	 *    'text'=>'Hallo, Deine Registrierung war erfolgreich......',
 	 * ]
 	 * $api->sendMail($teilnehmer, $idAktion, $mailConfig);
