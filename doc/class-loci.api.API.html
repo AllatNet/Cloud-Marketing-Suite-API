@@ -92,7 +92,7 @@
 		<b>Namespace:</b> <a href="namespace-loci.html">loci</a>\<a href="namespace-loci.api.html">api</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-loci.api.API.html#23-526" title="Go to source code">API.php</a>
+			<b>Located at</b> <a href="source-class-loci.api.API.html#23-530" title="Go to source code">API.php</a>
 		<br>
 	</div>
 
@@ -592,7 +592,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_sendMail">#</a>
-			<code><a href="source-class-loci.api.API.html#423-454" title="Go to source code">sendMail</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span>, <span>array <var>$conf</var></span> )</code>
+			<code><a href="source-class-loci.api.API.html#423-458" title="Go to source code">sendMail</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span>, <span>array <var>$conf</var></span> )</code>
 
 
 			<div class="description detailed">
@@ -603,7 +603,11 @@
 <pre><span class="php-var">$api</span> = <span class="php-keyword1">new</span> API(<span class="php-quote">&quot;my-secret-token&quot;</span>);
 <span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'_id'</span>=&gt;<span class="php-quote">'user-hash'</span>]
 <span class="php-var">$teilnehmer</span> = <span class="php-var">$api</span>-&gt;getTeilnehmer(<span class="php-var">$config</span>);
-<span class="php-var">$mailConfig</span> = [ <span class="php-quote">'from'</span>=&gt;<span class="php-quote">'Name &lt;from@example.com&gt;'</span>, <span class="php-quote">'to'</span>=&gt;<span class="php-quote">'Name &lt;to@example.com&gt;'</span>, <span class="php-quote">'subject'</span>=&gt;<span class="php-quote">'Deine Registrierung'</span>, <span class="php-quote">'text'</span>=&gt;<span class="php-quote">'Hallo, Deine Registrierung war erfolgreich......'</span>,
+<span class="php-var">$mailConfig</span> = [
+ <span class="php-quote">'from'</span>=&gt;<span class="php-quote">'Name &lt;from@example.com&gt;'</span>,
+ <span class="php-quote">'to'</span>=&gt;<span class="php-quote">'Name &lt;to@example.com&gt;'</span>,
+ <span class="php-quote">'subject'</span>=&gt;<span class="php-quote">'Deine Registrierung'</span>,
+ <span class="php-quote">'text'</span>=&gt;<span class="php-quote">'Hallo, Deine Registrierung war erfolgreich......'</span>,
 ]
 <span class="php-var">$api</span>-&gt;sendMail(<span class="php-var">$teilnehmer</span>, <span class="php-var">$idAktion</span>, <span class="php-var">$mailConfig</span>);</pre>
 
@@ -643,7 +647,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_setAktionsDaten">#</a>
-			<code><a href="source-class-loci.api.API.html#456-487" title="Go to source code">setAktionsDaten</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span>, <span>array <var>$aktionsDaten</var></span> )</code>
+			<code><a href="source-class-loci.api.API.html#460-491" title="Go to source code">setAktionsDaten</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span>, <span>array <var>$aktionsDaten</var></span> )</code>
 
 
 			<div class="description detailed">
@@ -698,7 +702,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_updateTeilnehmer">#</a>
-			<code><a href="source-class-loci.api.API.html#489-525" title="Go to source code">updateTeilnehmer</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span> )</code>
+			<code><a href="source-class-loci.api.API.html#493-529" title="Go to source code">updateTeilnehmer</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span> )</code>
 
 
 			<div class="description detailed">

@@ -205,12 +205,12 @@ if($teilnehmer){
 	Betreff: "<?= $subject ?><br />
 	Text: "<?= nl2br($text) ?>
 	<?php
-	$sendMail = $api->sendMail($teilnehmer, $aktion->id, [
+	/*$sendMail = $api->sendMail($teilnehmer, $aktion->id, [
 		'from'=>$from,
 		'to'=>$teilnehmer->email,
 		'subject'=>$subject,
 		'text'=>$text,
-	]);
+	]);*/
 	if($sendMail){
 		echo '<pre>';
 		echo 'Erfolgreich';

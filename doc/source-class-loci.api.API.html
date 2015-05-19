@@ -515,101 +515,105 @@
 </span></span><span id="429" class="l"><a href="#429">429 </a><span class="php-comment">     * $config = ['idAktion'=&gt;$idAktion, '_id'=&gt;'user-hash']
 </span></span><span id="430" class="l"><a href="#430">430 </a><span class="php-comment">     * $teilnehmer = $api-&gt;getTeilnehmer($config);
 </span></span><span id="431" class="l"><a href="#431">431 </a><span class="php-comment">     * $mailConfig = [
-</span></span><span id="432" class="l"><a href="#432">432 </a><span class="php-comment">     *    'from'=&gt;'Name &lt;from@example.com&gt;',
-</span></span><span id="433" class="l"><a href="#433">433 </a><span class="php-comment">     *    'to'=&gt;'Name &lt;to@example.com&gt;',
-</span></span><span id="434" class="l"><a href="#434">434 </a><span class="php-comment">     *    'subject'=&gt;'Deine Registrierung',
-</span></span><span id="435" class="l"><a href="#435">435 </a><span class="php-comment">     *    'text'=&gt;'Hallo, Deine Registrierung war erfolgreich......',
-</span></span><span id="436" class="l"><a href="#436">436 </a><span class="php-comment">     * ]
-</span></span><span id="437" class="l"><a href="#437">437 </a><span class="php-comment">     * $api-&gt;sendMail($teilnehmer, $idAktion, $mailConfig);
-</span></span><span id="438" class="l"><a href="#438">438 </a><span class="php-comment">     * ```
-</span></span><span id="439" class="l"><a href="#439">439 </a><span class="php-comment">     *
-</span></span><span id="440" class="l"><a href="#440">440 </a><span class="php-comment">     * @param Teilnehmer $teilnehmer
-</span></span><span id="441" class="l"><a href="#441">441 </a><span class="php-comment">     * @param integer $idAktion
-</span></span><span id="442" class="l"><a href="#442">442 </a><span class="php-comment">     * @param array    $conf
+</span></span><span id="432" class="l"><a href="#432">432 </a><span class="php-comment">     *
+</span></span><span id="433" class="l"><a href="#433">433 </a><span class="php-comment">     *    'from'=&gt;'Name &lt;from@example.com&gt;',
+</span></span><span id="434" class="l"><a href="#434">434 </a><span class="php-comment">     *
+</span></span><span id="435" class="l"><a href="#435">435 </a><span class="php-comment">     *    'to'=&gt;'Name &lt;to@example.com&gt;',
+</span></span><span id="436" class="l"><a href="#436">436 </a><span class="php-comment">     *
+</span></span><span id="437" class="l"><a href="#437">437 </a><span class="php-comment">     *    'subject'=&gt;'Deine Registrierung',
+</span></span><span id="438" class="l"><a href="#438">438 </a><span class="php-comment">     *
+</span></span><span id="439" class="l"><a href="#439">439 </a><span class="php-comment">     *    'text'=&gt;'Hallo, Deine Registrierung war erfolgreich......',
+</span></span><span id="440" class="l"><a href="#440">440 </a><span class="php-comment">     * ]
+</span></span><span id="441" class="l"><a href="#441">441 </a><span class="php-comment">     * $api-&gt;sendMail($teilnehmer, $idAktion, $mailConfig);
+</span></span><span id="442" class="l"><a href="#442">442 </a><span class="php-comment">     * ```
 </span></span><span id="443" class="l"><a href="#443">443 </a><span class="php-comment">     *
-</span></span><span id="444" class="l"><a href="#444">444 </a><span class="php-comment">     * @return true|false
-</span></span><span id="445" class="l"><a href="#445">445 </a><span class="php-comment">     * * Erfolgreich: TRUE
-</span></span><span id="446" class="l"><a href="#446">446 </a><span class="php-comment">     * * Fehler: FALSE
-</span></span><span id="447" class="l"><a href="#447">447 </a><span class="php-comment">     */</span>
-</span><span id="448" class="l"><a href="#448">448 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> sendMail(Teilnehmer <span class="php-var">$teilnehmer</span>, <span class="php-var">$idAktion</span>, <span class="php-var">$conf</span>) {
-</span><span id="449" class="l"><a href="#449">449 </a>        <span class="php-var">$this</span>-&gt;request([<span class="php-quote">'mail'</span> =&gt; <span class="php-var">$conf</span>, <span class="php-quote">'aktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'user'</span> =&gt; <span class="php-var">$teilnehmer</span>-&gt;id]);
-</span><span id="450" class="l"><a href="#450">450 </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword1">empty</span>(<span class="php-var">$this</span>-&gt;errorNo))
-</span><span id="451" class="l"><a href="#451">451 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
-</span><span id="452" class="l"><a href="#452">452 </a>
-</span><span id="453" class="l"><a href="#453">453 </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">true</span>;
-</span><span id="454" class="l"><a href="#454">454 </a>    }
-</span><span id="455" class="l"><a href="#455">455 </a>
-</span><span id="456" class="l"><a href="#456">456 </a>    <span class="php-comment">/**
-</span></span><span id="457" class="l"><a href="#457">457 </a><span class="php-comment">     * Setzt entsprechende Aktionsdaten zu einem Teilnehmer
-</span></span><span id="458" class="l"><a href="#458">458 </a><span class="php-comment">     *
-</span></span><span id="459" class="l"><a href="#459">459 </a><span class="php-comment">     * Beispiel:
-</span></span><span id="460" class="l"><a href="#460">460 </a><span class="php-comment">     * ```php
-</span></span><span id="461" class="l"><a href="#461">461 </a><span class="php-comment">     * $api = new API(&quot;my-secret-token&quot;);
-</span></span><span id="462" class="l"><a href="#462">462 </a><span class="php-comment">     * $config = ['idAktion'=&gt;$idAktion, '_id'=&gt;'user-hash']
-</span></span><span id="463" class="l"><a href="#463">463 </a><span class="php-comment">     * $teilnehmer = $api-&gt;getTeilnehmer($config);
-</span></span><span id="464" class="l"><a href="#464">464 </a><span class="php-comment">     * $api-&gt;setAktionsDaten($teilnehmer, $idAktion, ['teilgenommen'=&gt;date('d.m.Y H:i:s'])]
-</span></span><span id="465" class="l"><a href="#465">465 </a><span class="php-comment">     * ```
-</span></span><span id="466" class="l"><a href="#466">466 </a><span class="php-comment">     *
-</span></span><span id="467" class="l"><a href="#467">467 </a><span class="php-comment">     * @param \loci\api\lib\Teilnehmer $teilnehmer   - Teilnehmer Objekt
-</span></span><span id="468" class="l"><a href="#468">468 </a><span class="php-comment">     * @param integer                  $idAktion     - ID der Aktion
-</span></span><span id="469" class="l"><a href="#469">469 </a><span class="php-comment">     * @param array                    $aktionsDaten - Array mit Daten
+</span></span><span id="444" class="l"><a href="#444">444 </a><span class="php-comment">     * @param Teilnehmer $teilnehmer
+</span></span><span id="445" class="l"><a href="#445">445 </a><span class="php-comment">     * @param integer $idAktion
+</span></span><span id="446" class="l"><a href="#446">446 </a><span class="php-comment">     * @param array    $conf
+</span></span><span id="447" class="l"><a href="#447">447 </a><span class="php-comment">     *
+</span></span><span id="448" class="l"><a href="#448">448 </a><span class="php-comment">     * @return true|false
+</span></span><span id="449" class="l"><a href="#449">449 </a><span class="php-comment">     * * Erfolgreich: TRUE
+</span></span><span id="450" class="l"><a href="#450">450 </a><span class="php-comment">     * * Fehler: FALSE
+</span></span><span id="451" class="l"><a href="#451">451 </a><span class="php-comment">     */</span>
+</span><span id="452" class="l"><a href="#452">452 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> sendMail(Teilnehmer <span class="php-var">$teilnehmer</span>, <span class="php-var">$idAktion</span>, <span class="php-var">$conf</span>) {
+</span><span id="453" class="l"><a href="#453">453 </a>        <span class="php-var">$this</span>-&gt;request([<span class="php-quote">'mail'</span> =&gt; <span class="php-var">$conf</span>, <span class="php-quote">'aktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'user'</span> =&gt; <span class="php-var">$teilnehmer</span>-&gt;id]);
+</span><span id="454" class="l"><a href="#454">454 </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword1">empty</span>(<span class="php-var">$this</span>-&gt;errorNo))
+</span><span id="455" class="l"><a href="#455">455 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
+</span><span id="456" class="l"><a href="#456">456 </a>
+</span><span id="457" class="l"><a href="#457">457 </a>        <span class="php-keyword1">return</span> <span class="php-keyword1">true</span>;
+</span><span id="458" class="l"><a href="#458">458 </a>    }
+</span><span id="459" class="l"><a href="#459">459 </a>
+</span><span id="460" class="l"><a href="#460">460 </a>    <span class="php-comment">/**
+</span></span><span id="461" class="l"><a href="#461">461 </a><span class="php-comment">     * Setzt entsprechende Aktionsdaten zu einem Teilnehmer
+</span></span><span id="462" class="l"><a href="#462">462 </a><span class="php-comment">     *
+</span></span><span id="463" class="l"><a href="#463">463 </a><span class="php-comment">     * Beispiel:
+</span></span><span id="464" class="l"><a href="#464">464 </a><span class="php-comment">     * ```php
+</span></span><span id="465" class="l"><a href="#465">465 </a><span class="php-comment">     * $api = new API(&quot;my-secret-token&quot;);
+</span></span><span id="466" class="l"><a href="#466">466 </a><span class="php-comment">     * $config = ['idAktion'=&gt;$idAktion, '_id'=&gt;'user-hash']
+</span></span><span id="467" class="l"><a href="#467">467 </a><span class="php-comment">     * $teilnehmer = $api-&gt;getTeilnehmer($config);
+</span></span><span id="468" class="l"><a href="#468">468 </a><span class="php-comment">     * $api-&gt;setAktionsDaten($teilnehmer, $idAktion, ['teilgenommen'=&gt;date('d.m.Y H:i:s'])]
+</span></span><span id="469" class="l"><a href="#469">469 </a><span class="php-comment">     * ```
 </span></span><span id="470" class="l"><a href="#470">470 </a><span class="php-comment">     *
-</span></span><span id="471" class="l"><a href="#471">471 </a><span class="php-comment">     * @return array
-</span></span><span id="472" class="l"><a href="#472">472 </a><span class="php-comment">     * * Erfolgreich: Array mit den Aktionsdaten
-</span></span><span id="473" class="l"><a href="#473">473 </a><span class="php-comment">     * * Fehler: NULL
-</span></span><span id="474" class="l"><a href="#474">474 </a><span class="php-comment">     */</span>
-</span><span id="475" class="l"><a href="#475">475 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> setAktionsDaten(<span class="php-var">$teilnehmer</span>, <span class="php-var">$idAktion</span>, <span class="php-var">$aktionsDaten</span>) {
-</span><span id="476" class="l"><a href="#476">476 </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$teilnehmer</span> <span class="php-keyword1">instanceof</span> Teilnehmer) {
-</span><span id="477" class="l"><a href="#477">477 </a>            <span class="php-var">$this</span>-&gt;errorNo      = <span class="php-num">400</span>;
-</span><span id="478" class="l"><a href="#478">478 </a>            <span class="php-var">$this</span>-&gt;errorMessage = <span class="php-quote">'Der Parameter $teilnehmer muss ein Objekt vom Typ \loci\api\lib\Teilnehmer sein'</span>;
-</span><span id="479" class="l"><a href="#479">479 </a>
-</span><span id="480" class="l"><a href="#480">480 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
-</span><span id="481" class="l"><a href="#481">481 </a>        }
-</span><span id="482" class="l"><a href="#482">482 </a>        <span class="php-var">$data</span> = <span class="php-var">$this</span>-&gt;request([<span class="php-quote">'idAktion'</span> =&gt; <span class="php-var">$idAktion</span>, <span class="php-quote">'aktionsDaten'</span> =&gt; <span class="php-var">$aktionsDaten</span>, <span class="php-quote">'tln'</span> =&gt; <span class="php-var">$teilnehmer</span>-&gt;attributes[<span class="php-quote">'_id'</span>]]);
-</span><span id="483" class="l"><a href="#483">483 </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword1">empty</span>(<span class="php-var">$this</span>-&gt;errorNo))
+</span></span><span id="471" class="l"><a href="#471">471 </a><span class="php-comment">     * @param \loci\api\lib\Teilnehmer $teilnehmer   - Teilnehmer Objekt
+</span></span><span id="472" class="l"><a href="#472">472 </a><span class="php-comment">     * @param integer                  $idAktion     - ID der Aktion
+</span></span><span id="473" class="l"><a href="#473">473 </a><span class="php-comment">     * @param array                    $aktionsDaten - Array mit Daten
+</span></span><span id="474" class="l"><a href="#474">474 </a><span class="php-comment">     *
+</span></span><span id="475" class="l"><a href="#475">475 </a><span class="php-comment">     * @return array
+</span></span><span id="476" class="l"><a href="#476">476 </a><span class="php-comment">     * * Erfolgreich: Array mit den Aktionsdaten
+</span></span><span id="477" class="l"><a href="#477">477 </a><span class="php-comment">     * * Fehler: NULL
+</span></span><span id="478" class="l"><a href="#478">478 </a><span class="php-comment">     */</span>
+</span><span id="479" class="l"><a href="#479">479 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> setAktionsDaten(<span class="php-var">$teilnehmer</span>, <span class="php-var">$idAktion</span>, <span class="php-var">$aktionsDaten</span>) {
+</span><span id="480" class="l"><a href="#480">480 </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$teilnehmer</span> <span class="php-keyword1">instanceof</span> Teilnehmer) {
+</span><span id="481" class="l"><a href="#481">481 </a>            <span class="php-var">$this</span>-&gt;errorNo      = <span class="php-num">400</span>;
+</span><span id="482" class="l"><a href="#482">482 </a>            <span class="php-var">$this</span>-&gt;errorMessage = <span class="php-quote">'Der Parameter $teilnehmer muss ein Objekt vom Typ \loci\api\lib\Teilnehmer sein'</span>;
+</span><span id="483" class="l"><a href="#483">483 </a>
 </span><span id="484" class="l"><a href="#484">484 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
-</span><span id="485" class="l"><a href="#485">485 </a>
-</span><span id="486" class="l"><a href="#486">486 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;getAktionsDaten(<span class="php-var">$teilnehmer</span>, <span class="php-var">$idAktion</span>);
-</span><span id="487" class="l"><a href="#487">487 </a>    }
-</span><span id="488" class="l"><a href="#488">488 </a>
-</span><span id="489" class="l"><a href="#489">489 </a>    <span class="php-comment">/**
-</span></span><span id="490" class="l"><a href="#490">490 </a><span class="php-comment">     * Ändert die Teilnehmerdaten eines Teilnehmers
-</span></span><span id="491" class="l"><a href="#491">491 </a><span class="php-comment">     *
-</span></span><span id="492" class="l"><a href="#492">492 </a><span class="php-comment">     * Beispiel:
-</span></span><span id="493" class="l"><a href="#493">493 </a><span class="php-comment">     * ```php
-</span></span><span id="494" class="l"><a href="#494">494 </a><span class="php-comment">     * $api = new API(&quot;my-secret-token&quot;);
-</span></span><span id="495" class="l"><a href="#495">495 </a><span class="php-comment">     * // Selektion anhand E-Mail Adresse
-</span></span><span id="496" class="l"><a href="#496">496 </a><span class="php-comment">     * $config = ['idAktion'=&gt;$idAktion, 'email'=&gt;'example@example.com']
-</span></span><span id="497" class="l"><a href="#497">497 </a><span class="php-comment">     * // Selektion anhand Hash
-</span></span><span id="498" class="l"><a href="#498">498 </a><span class="php-comment">     * $config = ['idAktion'=&gt;$idAktion, '_id'=&gt;'user-hash']
-</span></span><span id="499" class="l"><a href="#499">499 </a><span class="php-comment">     * $teilnehmer = $api-&gt;getTeilnehmer($config);
-</span></span><span id="500" class="l"><a href="#500">500 </a><span class="php-comment">     * $teilnehmer-&gt;vorname = 'Max';
-</span></span><span id="501" class="l"><a href="#501">501 </a><span class="php-comment">     * $api-&gt;updateTeilnehmer($teilnehmer);
-</span></span><span id="502" class="l"><a href="#502">502 </a><span class="php-comment">     * ```
-</span></span><span id="503" class="l"><a href="#503">503 </a><span class="php-comment">     *
-</span></span><span id="504" class="l"><a href="#504">504 </a><span class="php-comment">     * @param \loci\api\lib\Teilnehmer $teilnehmer - Teilnehmer Objekt
-</span></span><span id="505" class="l"><a href="#505">505 </a><span class="php-comment">     *
-</span></span><span id="506" class="l"><a href="#506">506 </a><span class="php-comment">     * @return  \loci\api\lib\Teilnehmer
-</span></span><span id="507" class="l"><a href="#507">507 </a><span class="php-comment">     * * Erfolgreich: Aktuelles Teilnehmer Objekt
-</span></span><span id="508" class="l"><a href="#508">508 </a><span class="php-comment">     * * Fehler: NULL
-</span></span><span id="509" class="l"><a href="#509">509 </a><span class="php-comment">     */</span>
-</span><span id="510" class="l"><a href="#510">510 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> updateTeilnehmer(Teilnehmer <span class="php-var">$teilnehmer</span>) {
-</span><span id="511" class="l"><a href="#511">511 </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$teilnehmer</span> <span class="php-keyword1">instanceof</span> Teilnehmer) {
-</span><span id="512" class="l"><a href="#512">512 </a>            <span class="php-var">$this</span>-&gt;errorNo      = <span class="php-num">400</span>;
-</span><span id="513" class="l"><a href="#513">513 </a>            <span class="php-var">$this</span>-&gt;errorMessage = <span class="php-quote">'Der Parameter $teilnehmer muss ein Objekt vom Typ \loci\api\lib\Teilnehmer sein'</span>;
-</span><span id="514" class="l"><a href="#514">514 </a>
-</span><span id="515" class="l"><a href="#515">515 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
-</span><span id="516" class="l"><a href="#516">516 </a>        }
-</span><span id="517" class="l"><a href="#517">517 </a>        <span class="php-var">$data</span> = <span class="php-var">$this</span>-&gt;request(<span class="php-var">$teilnehmer</span>-&gt;attributes);
-</span><span id="518" class="l"><a href="#518">518 </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword1">empty</span>(<span class="php-var">$this</span>-&gt;errorNo))
+</span><span id="485" class="l"><a href="#485">485 </a>        }
+</span><span id="486" class="l"><a href="#486">486 </a>        <span class="php-var">$data</span> = <span class="php-var">$this</span>-&gt;request([<span class="php-quote">'idAktion'</span> =&gt; <span class="php-var">$idAktion</span>, <span class="php-quote">'aktionsDaten'</span> =&gt; <span class="php-var">$aktionsDaten</span>, <span class="php-quote">'tln'</span> =&gt; <span class="php-var">$teilnehmer</span>-&gt;attributes[<span class="php-quote">'_id'</span>]]);
+</span><span id="487" class="l"><a href="#487">487 </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword1">empty</span>(<span class="php-var">$this</span>-&gt;errorNo))
+</span><span id="488" class="l"><a href="#488">488 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
+</span><span id="489" class="l"><a href="#489">489 </a>
+</span><span id="490" class="l"><a href="#490">490 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;getAktionsDaten(<span class="php-var">$teilnehmer</span>, <span class="php-var">$idAktion</span>);
+</span><span id="491" class="l"><a href="#491">491 </a>    }
+</span><span id="492" class="l"><a href="#492">492 </a>
+</span><span id="493" class="l"><a href="#493">493 </a>    <span class="php-comment">/**
+</span></span><span id="494" class="l"><a href="#494">494 </a><span class="php-comment">     * Ändert die Teilnehmerdaten eines Teilnehmers
+</span></span><span id="495" class="l"><a href="#495">495 </a><span class="php-comment">     *
+</span></span><span id="496" class="l"><a href="#496">496 </a><span class="php-comment">     * Beispiel:
+</span></span><span id="497" class="l"><a href="#497">497 </a><span class="php-comment">     * ```php
+</span></span><span id="498" class="l"><a href="#498">498 </a><span class="php-comment">     * $api = new API(&quot;my-secret-token&quot;);
+</span></span><span id="499" class="l"><a href="#499">499 </a><span class="php-comment">     * // Selektion anhand E-Mail Adresse
+</span></span><span id="500" class="l"><a href="#500">500 </a><span class="php-comment">     * $config = ['idAktion'=&gt;$idAktion, 'email'=&gt;'example@example.com']
+</span></span><span id="501" class="l"><a href="#501">501 </a><span class="php-comment">     * // Selektion anhand Hash
+</span></span><span id="502" class="l"><a href="#502">502 </a><span class="php-comment">     * $config = ['idAktion'=&gt;$idAktion, '_id'=&gt;'user-hash']
+</span></span><span id="503" class="l"><a href="#503">503 </a><span class="php-comment">     * $teilnehmer = $api-&gt;getTeilnehmer($config);
+</span></span><span id="504" class="l"><a href="#504">504 </a><span class="php-comment">     * $teilnehmer-&gt;vorname = 'Max';
+</span></span><span id="505" class="l"><a href="#505">505 </a><span class="php-comment">     * $api-&gt;updateTeilnehmer($teilnehmer);
+</span></span><span id="506" class="l"><a href="#506">506 </a><span class="php-comment">     * ```
+</span></span><span id="507" class="l"><a href="#507">507 </a><span class="php-comment">     *
+</span></span><span id="508" class="l"><a href="#508">508 </a><span class="php-comment">     * @param \loci\api\lib\Teilnehmer $teilnehmer - Teilnehmer Objekt
+</span></span><span id="509" class="l"><a href="#509">509 </a><span class="php-comment">     *
+</span></span><span id="510" class="l"><a href="#510">510 </a><span class="php-comment">     * @return  \loci\api\lib\Teilnehmer
+</span></span><span id="511" class="l"><a href="#511">511 </a><span class="php-comment">     * * Erfolgreich: Aktuelles Teilnehmer Objekt
+</span></span><span id="512" class="l"><a href="#512">512 </a><span class="php-comment">     * * Fehler: NULL
+</span></span><span id="513" class="l"><a href="#513">513 </a><span class="php-comment">     */</span>
+</span><span id="514" class="l"><a href="#514">514 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> updateTeilnehmer(Teilnehmer <span class="php-var">$teilnehmer</span>) {
+</span><span id="515" class="l"><a href="#515">515 </a>        <span class="php-keyword1">if</span> (!<span class="php-var">$teilnehmer</span> <span class="php-keyword1">instanceof</span> Teilnehmer) {
+</span><span id="516" class="l"><a href="#516">516 </a>            <span class="php-var">$this</span>-&gt;errorNo      = <span class="php-num">400</span>;
+</span><span id="517" class="l"><a href="#517">517 </a>            <span class="php-var">$this</span>-&gt;errorMessage = <span class="php-quote">'Der Parameter $teilnehmer muss ein Objekt vom Typ \loci\api\lib\Teilnehmer sein'</span>;
+</span><span id="518" class="l"><a href="#518">518 </a>
 </span><span id="519" class="l"><a href="#519">519 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
-</span><span id="520" class="l"><a href="#520">520 </a>        <span class="php-var">$tln</span>             = <span class="php-keyword1">new</span> Teilnehmer();
-</span><span id="521" class="l"><a href="#521">521 </a>        <span class="php-var">$tln</span>-&gt;token      = <span class="php-var">$this</span>-&gt;token;
-</span><span id="522" class="l"><a href="#522">522 </a>        <span class="php-var">$tln</span>-&gt;attributes = (<span class="php-keyword1">array</span>)<span class="php-keyword2">json_decode</span>(<span class="php-var">$data</span>);
-</span><span id="523" class="l"><a href="#523">523 </a>
-</span><span id="524" class="l"><a href="#524">524 </a>        <span class="php-keyword1">return</span> <span class="php-var">$tln</span>;
-</span><span id="525" class="l"><a href="#525">525 </a>    }
-</span><span id="526" class="l"><a href="#526">526 </a>}</span></code></pre>
+</span><span id="520" class="l"><a href="#520">520 </a>        }
+</span><span id="521" class="l"><a href="#521">521 </a>        <span class="php-var">$data</span> = <span class="php-var">$this</span>-&gt;request(<span class="php-var">$teilnehmer</span>-&gt;attributes);
+</span><span id="522" class="l"><a href="#522">522 </a>        <span class="php-keyword1">if</span> (!<span class="php-keyword1">empty</span>(<span class="php-var">$this</span>-&gt;errorNo))
+</span><span id="523" class="l"><a href="#523">523 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
+</span><span id="524" class="l"><a href="#524">524 </a>        <span class="php-var">$tln</span>             = <span class="php-keyword1">new</span> Teilnehmer();
+</span><span id="525" class="l"><a href="#525">525 </a>        <span class="php-var">$tln</span>-&gt;token      = <span class="php-var">$this</span>-&gt;token;
+</span><span id="526" class="l"><a href="#526">526 </a>        <span class="php-var">$tln</span>-&gt;attributes = (<span class="php-keyword1">array</span>)<span class="php-keyword2">json_decode</span>(<span class="php-var">$data</span>);
+</span><span id="527" class="l"><a href="#527">527 </a>
+</span><span id="528" class="l"><a href="#528">528 </a>        <span class="php-keyword1">return</span> <span class="php-var">$tln</span>;
+</span><span id="529" class="l"><a href="#529">529 </a>    }
+</span><span id="530" class="l"><a href="#530">530 </a>}</span></code></pre>
 	</div>
 
 </div>
