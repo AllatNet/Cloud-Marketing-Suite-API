@@ -23,7 +23,7 @@ namespace loci\api\lib;
  * @property string  $fax
  * @property string  $website
  * @property string  $email
- * @property array   $kunden
+ * @property array  $$kunden
  */
 class Mandant
 {
@@ -54,8 +54,8 @@ class Mandant
 	 * @return bool
 	 */
 	public function __set($name, $value) {
-		if ($name == 'attributes' && is_array($value)) {
-			$this->_attributes = $value;
+		if ($name == 'attributes') {
+			$this->_attributes = (array)$value;
 		} else {
 			$this->_attributes[$name] = $value;
 		}

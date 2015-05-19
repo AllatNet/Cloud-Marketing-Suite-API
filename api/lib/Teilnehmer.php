@@ -38,6 +38,9 @@ class Teilnehmer {
 			case 'attributes':
 				return $this->_attributes;
 				break;
+			case 'id':
+				return $this->_attributes['_id'];
+				break;
 			default:
 				if (isset($this->_attributes[$name])) {
 					return $this->_attributes[$name];

@@ -146,12 +146,25 @@ class API
 	}
 
 	/**
+	 * @param integer $idAktion
 	 * @param array $data
 	 *
 	 * @return \loci\api\lib\Teilnehmer
 	 */
 	public function getTeilnehmer($data) {
+		if(empty($data['idAktion'])){
+			$this->errorNo = 400;
+			$this->errorMessage = 'Ein Teilnehmer kann nur mit idAktion gefunden werden';
+			return null;
+		}
+		if(count($data) < 2){
+			$this->errorNo = 400;
+			$this->errorMessage = 'Ein Teilnehmer kann nur mit mindestens zwei Attributen gesucht werden';
+			return null;
+		}
+
 		$data            = $this->request($data);
+
 		if(!empty($this->errorNo))
 			return null;
 		$tln             = new Teilnehmer();
@@ -286,6 +299,7 @@ class API
 		}
 
 		$return = curl_exec($ch);
+
 		if (!curl_errno($ch)) {
 			$responseHeader = curl_getinfo($ch);
 			if($responseHeader['http_code'] != 200){

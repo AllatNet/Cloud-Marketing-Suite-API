@@ -5,7 +5,7 @@ ini_set('error_reporting', E_ALL);
 
 require(__DIR__.'/api/API.php');
 
-$api = new \loci\api\API('9097b7c946794s856508f05e3506d9bfb');
+$api = new \loci\api\API('9097b7c946794856508f05e3506d9bfb');
 $api->isDev(true);
 
 ?>
@@ -41,7 +41,7 @@ if($mandant){
 ?>
 	<h2 id="Kunde">Kunde</h2>
 <?php
-$kunde = $api->getKunde(1);
+$kunde = $api->getKunde($mandant->kunden[0]->id);
 if($kunde){
 	echo '<pre>';
 	print_r($kunde);
@@ -54,7 +54,7 @@ if($kunde){
 ?>
 	<h2 id="Partner">Partner</h2>
 <?php
-$partner = $api->getPartner(1);
+$partner = $api->getPartner($kunde->partner[0]->id);
 if($partner){
 	echo '<pre>';
 	print_r($partner);
@@ -67,7 +67,7 @@ if($partner){
 ?>
 	<h2 id="Kampagne">Kampagne</h2>
 <?php
-$kampagne = $api->getKampagne(1);
+$kampagne = $api->getKampagne($partner->kampagnen[0]->id);
 if($kampagne){
 	echo '<pre>';
 	print_r($kampagne);
@@ -80,7 +80,7 @@ if($kampagne){
 ?>
 	<h2 id="Aktion">Aktion</h2>
 <?php
-$aktion = $api->getAktion(17);
+$aktion = $api->getAktion($kampagne->aktionen[0]->id);
 if($aktion){
 	echo '<pre>';
 	print_r($aktion);
@@ -93,13 +93,19 @@ if($aktion){
 ?>
 	<h2 id="Teilnehmer">Teilnehmer</h2>
 <?php
-$teilnehmer = $api->getTeilnehmer(['email' => 'ch@allatnet.de']);
-//$teilnehmer = $api->getTeilnehmer(['_idInternal'=>['idAction'=>21]]);
-//$teilnehmer = $api->getTeilnehmer(['_id'=>'553958b71f03ad08238b4567']);
+$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, 'email' => 'ch@allatnet.de']);
+
+//Teilnehmer mit Hash finden
+//$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, '_id'=>'553958b71f03ad08238b4567']);
+
+//Teilnehmer ID auslesen:
+//$teilnehmer->id;
+
 if($teilnehmer){
 	echo '<pre>';
 	print_r($teilnehmer);
 	echo '</pre>';
+
 }else{
 	echo '<pre>';
 	print_r($api->getError());
