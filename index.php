@@ -28,64 +28,136 @@ $api->isDev(true);
 	<br/>
 	<h2 id="Mandant">Mandant</h2>
 <?php
-echo '<pre>';
-print_r($api->getMandant());
-echo '</pre>';
+$mandant = $api->getMandant();
+if($mandant){
+	echo '<pre>';
+	print_r($mandant);
+	echo '</pre>';
+}else{
+	echo '<pre>';
+	print_r($api->getError());
+	echo '</pre>';
+}
 ?>
 	<h2 id="Kunde">Kunde</h2>
 <?php
-echo '<pre>';
-print_r($api->getKunde(1));
-echo '</pre>';
+$kunde = $api->getKunde(1);
+if($kunde){
+	echo '<pre>';
+	print_r($kunde);
+	echo '</pre>';
+}else{
+	echo '<pre>';
+	print_r($api->getError());
+	echo '</pre>';
+}
 ?>
 	<h2 id="Partner">Partner</h2>
 <?php
-echo '<pre>';
-print_r($api->getPartner(1));
-echo '</pre>';
+$partner = $api->getPartner(1);
+if($partner){
+	echo '<pre>';
+	print_r($partner);
+	echo '</pre>';
+}else{
+	echo '<pre>';
+	print_r($api->getError());
+	echo '</pre>';
+}
 ?>
 	<h2 id="Kampagne">Kampagne</h2>
 <?php
-echo '<pre>';
-print_r($api->getKampagne(1));
-echo '</pre>';
+$kampagne = $api->getKampagne(1);
+if($kampagne){
+	echo '<pre>';
+	print_r($kampagne);
+	echo '</pre>';
+}else{
+	echo '<pre>';
+	print_r($api->getError());
+	echo '</pre>';
+}
 ?>
 	<h2 id="Aktion">Aktion</h2>
 <?php
-echo '<pre>';
 $aktion = $api->getAktion(17);
-print_r($aktion);
-echo '</pre>';
+if($aktion){
+	echo '<pre>';
+	print_r($aktion);
+	echo '</pre>';
+}else{
+	echo '<pre>';
+	print_r($api->getError());
+	echo '</pre>';
+}
 ?>
 	<h2 id="Teilnehmer">Teilnehmer</h2>
 <?php
-echo '<pre>';
 $teilnehmer = $api->getTeilnehmer(['email' => 'ch@allatnet.de']);
-print_r($teilnehmer);
-//print_r($api->getTeilnehmer(['_idInternal'=>['idAction'=>21]]));
-//print_r($api->getTeilnehmer(['_id'=>'553958b71f03ad08238b4567']));
-echo '</pre>';
+//$teilnehmer = $api->getTeilnehmer(['_idInternal'=>['idAction'=>21]]);
+//$teilnehmer = $api->getTeilnehmer(['_id'=>'553958b71f03ad08238b4567']);
+if($teilnehmer){
+	echo '<pre>';
+	print_r($teilnehmer);
+	echo '</pre>';
+}else{
+	echo '<pre>';
+	print_r($api->getError());
+	echo '</pre>';
+}
+
+
 $time = time();
-?>
+if($teilnehmer){
+	?>
 	<h2 id="TeilnehmerUpdate">TeilnehmerUpdate</h2>
 	Setze das time Attribut auf <?= $time ?>!
-<?php
-$teilnehmer->time = $time;
-echo '<pre>';
-print_r($api->updateTeilnehmer($teilnehmer));
-echo '</pre>';
-?>
+	<?php
+	$teilnehmer->time = $time;
+	$update = $api->updateTeilnehmer($teilnehmer);
+	if($update){
+		echo '<pre>';
+		print_r($update);
+		echo '</pre>';
+	}else{
+		echo '<pre>';
+		print_r($api->getError());
+		echo '</pre>';
+	}
+}
 
+
+if($teilnehmer && $aktion){
+	?>
 	<h2 id="GetAktionsDaten">GetAktionsDaten</h2>
-<?php
-echo '<pre>';
-print_r($api->getAktionsDaten($teilnehmer, $aktion->id));
-echo '</pre>';
-?>
+	<?php
+	$getAktionsDaten = $api->getAktionsDaten($teilnehmer, $aktion->id);
+	if($getAktionsDaten){
+		echo '<pre>';
+		print_r($getAktionsDaten);
+		echo '</pre>';
+	}else{
+		echo '<pre>';
+		print_r($api->getError());
+		echo '</pre>';
+	}
+}
+
+
+if($teilnehmer && $aktion){
+	?>
 	<h2 id="SetAktionsDaten">SetAktionsDaten</h2>
-Setze das zeit Attribut auf <?= $time ?>!
-<?php
-echo '<pre>';
-print_r($api->setAktionsDaten($teilnehmer, $aktion->id, ['testaktion' => 'testwert', 'zeit' => $time]));
-echo '</pre>';
+	Setze das zeit Attribut auf <?= $time ?>!
+	<?php
+	$setAktionsDaten = $api->setAktionsDaten($teilnehmer, $aktion->id, ['testaktion'=>'testwert', 'zeit'=>$time]);
+	if($setAktionsDaten){
+		echo '<pre>';
+		print_r($setAktionsDaten);
+		echo '</pre>';
+	}else{
+		echo '<pre>';
+		print_r($api->getError());
+		echo '</pre>';
+	}
+}
 ?>

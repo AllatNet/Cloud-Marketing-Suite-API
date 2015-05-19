@@ -50,6 +50,18 @@ class API
 	private $host_prod = 'https://www.fb-sites.com/suite/backend/web/api';
 
 	/**
+	 * Fehlernummer bei der Abfrage der Schnittstelle
+	 * @var int
+	 */
+	private $errorNo = 0;
+
+	/**
+	 * Fehlermeldung bei der Abfrage der Schnittstelle
+	 * @var string
+	 */
+	private $errorMessage = '';
+
+	/**
 	 * Initialisiert die Schnittstelle. Jede Schnittstellenabfrage läuft über diese Instanz.
 	 *
 	 * @param string $token
@@ -88,6 +100,8 @@ class API
 			throw new \Exception('Attribut 1 muss ein Objekt vom Typ "Teilnehmer" sein.');
 		}
 		$data = $this->request(['idAktion' => $idAktion, 'tln' => $teilnehmer->attributes['_id']]);
+		if(!empty($this->errorNo))
+			return null;
 
 		return (array)json_decode($data);
 	}
@@ -105,6 +119,8 @@ class API
 			throw new \Exception('Attribut 1 muss ein Objekt vom Typ "Teilnehmer" sein.');
 		}
 		$data = $this->request(['idAktion' => $idAktion, 'aktionsDaten' => $aktionsDaten, 'tln' => $teilnehmer->attributes['_id']]);
+		if(!empty($this->errorNo))
+			return null;
 
 		return $this->getAktionsDaten($teilnehmer, $idAktion);
 	}
@@ -120,6 +136,8 @@ class API
 			throw new \Exception('Attribut 1 muss ein Objekt vom Typ "Teilnehmer" sein.');
 		}
 		$data            = $this->request($data->attributes);
+		if(!empty($this->errorNo))
+			return null;
 		$tln             = new Teilnehmer();
 		$tln->token      = $this->token;
 		$tln->attributes = (array)json_decode($data);
@@ -134,6 +152,8 @@ class API
 	 */
 	public function getTeilnehmer($data) {
 		$data            = $this->request($data);
+		if(!empty($this->errorNo))
+			return null;
 		$tln             = new Teilnehmer();
 		$tln->token      = $this->token;
 		$tln->attributes = json_decode($data);
@@ -148,6 +168,8 @@ class API
 	 */
 	public function getAktion($idAktion) {
 		$data               = $this->request(['idAktion' => $idAktion]);
+		if(!empty($this->errorNo))
+			return null;
 		$aktion             = new Aktion();
 		$aktion->attributes = json_decode($data);
 
@@ -161,6 +183,8 @@ class API
 	 */
 	public function getKampagne($idKampagne) {
 		$data                 = $this->request(['idKampagne' => $idKampagne]);
+		if(!empty($this->errorNo))
+			return null;
 		$kampagne             = new Kampagne();
 		$kampagne->attributes = json_decode($data);
 
@@ -174,6 +198,8 @@ class API
 	 */
 	public function getPartner($idPartner) {
 		$data                = $this->request(['idPartner' => $idPartner]);
+		if(!empty($this->errorNo))
+			return null;
 		$partner             = new Partner();
 		$partner->attributes = json_decode($data);
 
@@ -187,6 +213,8 @@ class API
 	 */
 	public function getKunde($idKunde) {
 		$data              = $this->request(['idKunde' => $idKunde]);
+		if(!empty($this->errorNo))
+			return null;
 		$kunde             = new Kunde();
 		$kunde->attributes = json_decode($data);
 
@@ -198,6 +226,8 @@ class API
 	 */
 	public function getMandant() {
 		$data                = $this->request();
+		if(!empty($this->errorNo))
+			return null;
 		$mandant             = new Mandant();
 		$mandant->attributes = json_decode($data);
 
@@ -205,6 +235,8 @@ class API
 	}
 
 	private function request($data = []) {
+		$this->errorNo = 0;
+		$this->errorMessage = '';
 		if ($this->dev) {
 			$host = $this->host_dev;
 		} else {
@@ -253,24 +285,25 @@ class API
 				echo $callers[1]['function'];
 		}
 
-		session_write_close();
 		$return = curl_exec($ch);
 		if (!curl_errno($ch)) {
 			$responseHeader = curl_getinfo($ch);
 			if($responseHeader['http_code'] != 200){
 				$data = (array)json_decode($return);
-				$this->sendException($responseHeader['http_code'], $data['message']);
+				$this->errorNo = $responseHeader['http_code'];
+				$this->errorMessage = $data['message'];
 			}
 		}
-		session_start();
 
 		curl_close($ch);
 
 		return $return;
 	}
 
-	private function sendException($code, $message) {
-		throw new ApiException($code, $message);
+	public function getError() {
+		return [
+			'code'=>$this->errorNo,
+			'message'=>$this->errorMessage,
+		];
 	}
-
 }
