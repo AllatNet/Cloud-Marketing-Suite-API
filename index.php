@@ -25,6 +25,7 @@ $api->isDev(true);
 	<a href="#TeilnehmerUpdate">TeilnehmerUpdate</a><br/>
 	<a href="#SetAktionsDaten">SetAktionsDaten</a><br/>
 	<a href="#GetAktionsDaten">GetAktionsDaten</a><br/>
+	<a href="#TeilnehmerEmail">TeilnehmerEmail</a><br/>
 	<br/>
 	<h2 id="Mandant">Mandant</h2>
 <?php
@@ -185,4 +186,41 @@ if($teilnehmer && $aktion){
 		echo '</pre>';
 	}
 }
+?>
+
+<?php
+if($teilnehmer){
+	?>
+	<h2 id="TeilnehmerEmail">TeilnehmerEmail</h2>
+	<?php
+	$from = "Loci <info@loci.biz>";
+	$subject = "Test E-Mail";
+	$text = "Hallo ~vorname~ ~nachname~ ~name~,
+
+	hier spricht deine Cloud-Marketing-Suite
+
+	LG Tester";
+	?>
+	Sende dem Teilnehmer von "<?= $from ?>" eine Nachricht<br />
+	Betreff: "<?= $subject ?><br />
+	Text: "<?= nl2br($text) ?>
+	<?php
+	$sendMail = $api->sendMail($teilnehmer, $aktion->id, [
+		'from'=>$from,
+		'to'=>$teilnehmer->email,
+		'subject'=>$subject,
+		'text'=>$text,
+	]);
+	if($sendMail){
+		echo '<pre>';
+		echo 'Erfolgreich';
+		echo '</pre>';
+	}else{
+		echo '<pre>';
+		echo 'Fehler';
+		echo '</pre>';
+	}
+}
+
+
 ?>

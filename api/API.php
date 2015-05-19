@@ -88,7 +88,7 @@ class API
 	 * $api->createTeilnehmer($idAktion, $teilnehmer);
 	 * ```
 	 *
-	 * @param            $idAktion - ID der Aktion
+	 * @param            $idAktion   - ID der Aktion
 	 * @param Teilnehmer $teilnehmer - Teilnehmer Objekt
 	 *
 	 * @return Teilnehmer|null
@@ -96,7 +96,7 @@ class API
 	 * * Fehler: NULL
 	 */
 	public function createTeilnehmer($idAktion, Teilnehmer $teilnehmer) {
-		$data             = $tln->attributes;
+		$data             = $teilnehmer->attributes;
 		$data['idAktion'] = $idAktion;
 		$return           = $this->request($data);
 		if (!empty($this->errorNo))
@@ -145,9 +145,9 @@ class API
 	 * ```
 	 *
 	 * @param \loci\api\lib\Teilnehmer $teilnehmer - Teilnehmer Objekt
-	 * @param integer                  $idAktion - ID der Aktion
+	 * @param integer                  $idAktion   - ID der Aktion
 	 *
-	 * @return array
+	 * @return array|null
 	 * * Erfolgreich: Array mit den Aktionsdaten
 	 * * Fehler: NULL
 	 */
@@ -396,6 +396,10 @@ class API
 				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&k='.$data['idKunde']);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
+			case 'sendMail':
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.urlencode(json_encode($data)));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				break;
 			default:
 				echo $callers[1]['function'];
 		}
@@ -418,11 +422,35 @@ class API
 
 	/**
 	 * Sendet einem Teilnehmer eine E-mail
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $config = ['idAktion'=>$idAktion, '_id'=>'user-hash']
+	 * $teilnehmer = $api->getTeilnehmer($config);
+	 * $mailConfig = [
+	 *    'from'=>'Name <from@example.com>',
+	 *    'to'=>'Name <to@example.com>',
+	 *    'subject'=>'Deine Registrierung',
+	 *    'text'=>'Hallo, Deine Registrierung war erfolgreich......',
+	 * ]
+	 * $api->sendMail($teilnehmer, $idAktion, $mailConfig);
+	 * ```
+	 *
 	 * @param Teilnehmer $teilnehmer
-	 * @param            $conf
+	 * @param integer $idAktion
+	 * @param array    $conf
+	 *
+	 * @return true|false
+	 * * Erfolgreich: TRUE
+	 * * Fehler: FALSE
 	 */
-	public function sendMail(Teilnehmer $teilnehmer, $conf) {
+	public function sendMail(Teilnehmer $teilnehmer, $idAktion, $conf) {
+		$this->request(['mail' => $conf, 'aktion'=>$idAktion, 'user' => $teilnehmer->id]);
+		if (!empty($this->errorNo))
+			return false;
 
+		return true;
 	}
 
 	/**
@@ -436,8 +464,8 @@ class API
 	 * $api->setAktionsDaten($teilnehmer, $idAktion, ['teilgenommen'=>date('d.m.Y H:i:s'])]
 	 * ```
 	 *
-	 * @param \loci\api\lib\Teilnehmer $teilnehmer - Teilnehmer Objekt
-	 * @param integer                  $idAktion - ID der Aktion
+	 * @param \loci\api\lib\Teilnehmer $teilnehmer   - Teilnehmer Objekt
+	 * @param integer                  $idAktion     - ID der Aktion
 	 * @param array                    $aktionsDaten - Array mit Daten
 	 *
 	 * @return array
