@@ -91,7 +91,26 @@ if($aktion){
 	echo '</pre>';
 }
 ?>
-	<h2 id="Teilnehmer">Teilnehmer</h2>
+	<h2 id="Teilnehmer">Teilnehmer erstellen</h2>
+<?php
+$teilnehmer = new \loci\api\lib\Teilnehmer();
+$teilnehmer->vorname = 'Tester';
+$teilnehmer->nachname = 'Testers';
+$teilnehmer->email = 'test@example.com';
+$teilnehmerCreate = $api->createTeilnehmer($kampagne->aktionen[0]->id, $teilnehmer);
+if($teilnehmerCreate){
+	echo '<pre>';
+	print_r($teilnehmerCreate);
+	echo '</pre>';
+
+}else{
+	echo '<pre>';
+	print_r($api->getError());
+	echo '</pre>';
+}
+
+?>
+	<h2>Teilnehmer</h2>
 <?php
 $teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, 'email' => 'ch@allatnet.de']);
 

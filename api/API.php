@@ -125,6 +125,18 @@ class API
 		return $this->getAktionsDaten($teilnehmer, $idAktion);
 	}
 
+	public function createTeilnehmer($idAktion, Teilnehmer $tln) {
+		$data = $tln->attributes;
+		$data['idAktion'] = $idAktion;
+		$return = $this->request($data);
+		if(!empty($this->errorNo))
+			return null;
+		$tln = new Teilnehmer();
+		$tln->token = $this->token;
+		$tln->attributes = (array)json_decode($return);
+		return $tln;
+	}
+
 	/**
 	 * @param array $data
 	 *
@@ -268,6 +280,10 @@ class API
 				break;
 			case 'updateTeilnehmer':
 				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&i='.$data['_id'].'&d='.urlencode(json_encode($data)));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				break;
+			case 'createTeilnehmer':
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.urlencode(json_encode($data)));
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'getTeilnehmer':
