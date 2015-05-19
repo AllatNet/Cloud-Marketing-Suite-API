@@ -31,11 +31,16 @@ class API
 	private $dev = false;
 
 	/**
-	 * Token der für die Schnittstellenbefragung notwendig ist
-	 * @see __construct()
-	 * @var null|string
+	 * Fehlermeldung bei der Abfrage der Schnittstelle
+	 * @var string
 	 */
-	private $token = null;
+	private $errorMessage = '';
+
+	/**
+	 * Fehlernummer bei der Abfrage der Schnittstelle
+	 * @var int
+	 */
+	private $errorNo = 0;
 
 	/**
 	 * Url zur API des Entwicklungssystem
@@ -50,21 +55,16 @@ class API
 	private $host_prod = 'https://www.fb-sites.com/suite/backend/web/api';
 
 	/**
-	 * Fehlernummer bei der Abfrage der Schnittstelle
-	 * @var int
+	 * Token der für die Schnittstellenbefragung notwendig ist
+	 * @see __construct()
+	 * @var null|string
 	 */
-	private $errorNo = 0;
-
-	/**
-	 * Fehlermeldung bei der Abfrage der Schnittstelle
-	 * @var string
-	 */
-	private $errorMessage = '';
+	private $token = null;
 
 	/**
 	 * Initialisiert die Schnittstelle. Jede Schnittstellenabfrage läuft über diese Instanz.
 	 *
-	 * @param string $token
+	 * @param string $token - Token ist von Ihrem Cloud-Marketing-Suite Mandanten zu erhalten
 	 */
 	public function __construct($token) {
 		require_once(__DIR__.'/lib/Aktion.php');
@@ -78,106 +78,256 @@ class API
 	}
 
 	/**
-	 * Wenn True gesetzt wird, wird die Entwicklungsumgebung abgefragt
+	 * Erstellt einen Teilnehmer in der Datenbank
 	 *
-	 * @param bool $dev
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $teilnehmer = new Teilnehmer()
+	 * $teilnehmer->vorname = 'Max';
+	 * $api->createTeilnehmer($idAktion, $teilnehmer);
+	 * ```
+	 *
+	 * @param            $idAktion - ID der Aktion
+	 * @param Teilnehmer $teilnehmer - Teilnehmer Objekt
+	 *
+	 * @return Teilnehmer|null
+	 * * Erfolgreich: Aktuelles Teilnehmer Objekt
+	 * * Fehler: NULL
 	 */
-	public function isDev($dev = false) {
-		$this->dev = (boolean)$dev;
+	public function createTeilnehmer($idAktion, Teilnehmer $teilnehmer) {
+		$data             = $tln->attributes;
+		$data['idAktion'] = $idAktion;
+		$return           = $this->request($data);
+		if (!empty($this->errorNo))
+			return null;
+		$tln             = new Teilnehmer();
+		$tln->token      = $this->token;
+		$tln->attributes = (array)json_decode($return);
+
+		return $tln;
 	}
 
 	/**
-	 * Holt die Aktionsdaten zu einem Teilnehmer.
+	 * Holt die Aktionsdaten zu der via ID angegebenen Aktion
 	 *
-	 * @param \loci\api\lib\Teilnehmer $teilnehmer
-	 * @param integer                  $idAktion
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $api->getAktion($idAktion);
+	 * ```
+	 *
+	 * @param integer $idAktion - ID der Aktion
+	 *
+	 * @return Aktion
+	 * * Erfolgreich: Objekt vom Typ Aktion
+	 * * Fehler: NULL
+	 */
+	public function getAktion($idAktion) {
+		$data = $this->request(['idAktion' => $idAktion]);
+		if (!empty($this->errorNo))
+			return null;
+		$aktion             = new Aktion();
+		$aktion->attributes = json_decode($data);
+
+		return $aktion;
+	}
+
+	/**
+	 * Holt entsprechende Aktionsdaten zu einem Teilnehmer
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $config = ['idAktion'=>$idAktion, '_id'=>'user-hash']
+	 * $teilnehmer = $api->getTeilnehmer($config);
+	 * $api->getAktionsDaten($teilnehmer, $idAktion)]
+	 * ```
+	 *
+	 * @param \loci\api\lib\Teilnehmer $teilnehmer - Teilnehmer Objekt
+	 * @param integer                  $idAktion - ID der Aktion
 	 *
 	 * @return array
-	 * @throws \Exception
+	 * * Erfolgreich: Array mit den Aktionsdaten
+	 * * Fehler: NULL
 	 */
 	public function getAktionsDaten($teilnehmer, $idAktion) {
 		if (!$teilnehmer instanceof Teilnehmer) {
-			throw new \Exception('Attribut 1 muss ein Objekt vom Typ "Teilnehmer" sein.');
+			$this->errorNo      = 400;
+			$this->errorMessage = 'Der Parameter $teilnehmer muss ein Objekt vom Typ \loci\api\lib\Teilnehmer sein';
+
+			return null;
 		}
 		$data = $this->request(['idAktion' => $idAktion, 'tln' => $teilnehmer->attributes['_id']]);
-		if(!empty($this->errorNo))
+		if (!empty($this->errorNo))
 			return null;
 
 		return (array)json_decode($data);
 	}
 
 	/**
-	 * @param \loci\api\lib\Teilnehmer $teilnehmer
-	 * @param integer                  $idAktion
-	 * @param array                    $aktionsDaten
+	 *
+	 * Gibt aufgetretene Fehlermeldungen zurück
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $api->getKunde($idKunde);
+	 * $errors = $api->getError();
+	 * ```
+	 * Die Variable $error enthält jetzt folgendes Array:
+	 * <pre>
+	 * Array
+	 * (
+	 *    [code] => "Fehlercode"
+	 *    [message] => "Fehlermeldung"
+	 * )
+	 * </pre>
 	 *
 	 * @return array
-	 * @throws \Exception
 	 */
-	public function setAktionsDaten($teilnehmer, $idAktion, $aktionsDaten) {
-		if (!$teilnehmer instanceof Teilnehmer) {
-			throw new \Exception('Attribut 1 muss ein Objekt vom Typ "Teilnehmer" sein.');
-		}
-		$data = $this->request(['idAktion' => $idAktion, 'aktionsDaten' => $aktionsDaten, 'tln' => $teilnehmer->attributes['_id']]);
-		if(!empty($this->errorNo))
-			return null;
-
-		return $this->getAktionsDaten($teilnehmer, $idAktion);
-	}
-
-	public function createTeilnehmer($idAktion, Teilnehmer $tln) {
-		$data = $tln->attributes;
-		$data['idAktion'] = $idAktion;
-		$return = $this->request($data);
-		if(!empty($this->errorNo))
-			return null;
-		$tln = new Teilnehmer();
-		$tln->token = $this->token;
-		$tln->attributes = (array)json_decode($return);
-		return $tln;
+	public function getError() {
+		return [
+			'code'    => $this->errorNo,
+			'message' => $this->errorMessage,
+		];
 	}
 
 	/**
-	 * @param array $data
+	 * Holt die Kampagnendaten zu der via ID angegebenen Kampagne
 	 *
-	 * @return  \loci\api\lib\Teilnehmer
-	 * @throws \Exception
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $api->getKampagne($idKampagne);
+	 * ```
+	 *
+	 * @param integer $idKampagne - ID der Kampagne
+	 *
+	 * @return Kampagne
+	 * * Erfolgreich: Objekt vom Typ Kampagne
+	 * * Fehler: NULL
 	 */
-	public function updateTeilnehmer($data) {
-		if (!$data instanceof Teilnehmer) {
-			throw new \Exception('Attribut 1 muss ein Objekt vom Typ "Teilnehmer" sein.');
-		}
-		$data            = $this->request($data->attributes);
-		if(!empty($this->errorNo))
+	public function getKampagne($idKampagne) {
+		$data = $this->request(['idKampagne' => $idKampagne]);
+		if (!empty($this->errorNo))
 			return null;
-		$tln             = new Teilnehmer();
-		$tln->token      = $this->token;
-		$tln->attributes = (array)json_decode($data);
+		$kampagne             = new Kampagne();
+		$kampagne->attributes = json_decode($data);
 
-		return $tln;
+		return $kampagne;
 	}
 
 	/**
-	 * @param integer $idAktion
-	 * @param array $data
+	 * Holt die Kundendaten zu dem via ID angegebenen Kunden
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $api->getKunde($idKunde);
+	 * ```
+	 *
+	 * @param integer $idKunde - ID des Kunden
+	 *
+	 * @return Kunde
+	 * * Erfolgreich: Objekt vom Typ Kunde
+	 * * Fehler: NULL
+	 */
+	public function getKunde($idKunde) {
+		$data = $this->request(['idKunde' => $idKunde]);
+		if (!empty($this->errorNo))
+			return null;
+		$kunde             = new Kunde();
+		$kunde->attributes = json_decode($data);
+
+		return $kunde;
+	}
+
+	/**
+	 * Holt die Mandantendaten zu dem via ID angegebenen Mandanten
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $api->getMandant();
+	 * ```
+	 * @return Mandant
+	 * * Erfolgreich: Objekt vom Typ Mandant
+	 * * Fehler: NULL
+	 */
+	public function getMandant() {
+		$data = $this->request();
+		if (!empty($this->errorNo))
+			return null;
+		$mandant             = new Mandant();
+		$mandant->attributes = json_decode($data);
+
+		return $mandant;
+	}
+
+	/**
+	 * Holt die Partnerdaten zu dem via ID angegebenen Partner
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $api->getPartner($idPartner);
+	 * ```
+	 *
+	 * @param integer $idPartner - ID des Partners
+	 *
+	 * @return Partner
+	 * * Erfolgreich: Objekt vom Typ Partner
+	 * * Fehler: NULL
+	 */
+	public function getPartner($idPartner) {
+		$data = $this->request(['idPartner' => $idPartner]);
+		if (!empty($this->errorNo))
+			return null;
+		$partner             = new Partner();
+		$partner->attributes = json_decode($data);
+
+		return $partner;
+	}
+
+	/**
+	 * Holt die Teilnehmerdaten eines angegebenen Teilnehmers
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * // Selektion anhand E-Mail Adresse
+	 * $config = ['idAktion'=>$idAktion, 'email'=>'example@example.com']
+	 * // Selektion anhand Hash
+	 * $config = ['idAktion'=>$idAktion, '_id'=>'user-hash']
+	 * $teilnehmer = $api->getTeilnehmer($config);
+	 * ```
+	 *
+	 * @param array $data - Config Array des Teilnehmers, mindestens jedoch zwei Parameter<br />
+	 *                    Dabei ist idAktion Pflicht!<br />
+	 *                    ['idAktion'=>$idAktion, 'email'=>'example@example.com']
 	 *
 	 * @return \loci\api\lib\Teilnehmer
+	 * * Erfolgreich: Aktuelles Teilnehmer Objekt
+	 * * Fehler: NULL
 	 */
 	public function getTeilnehmer($data) {
-		if(empty($data['idAktion'])){
-			$this->errorNo = 400;
+		if (empty($data['idAktion'])) {
+			$this->errorNo      = 400;
 			$this->errorMessage = 'Ein Teilnehmer kann nur mit idAktion gefunden werden';
+
 			return null;
 		}
-		if(count($data) < 2){
-			$this->errorNo = 400;
+		if (count($data) < 2) {
+			$this->errorNo      = 400;
 			$this->errorMessage = 'Ein Teilnehmer kann nur mit mindestens zwei Attributen gesucht werden';
+
 			return null;
 		}
 
-		$data            = $this->request($data);
+		$data = $this->request($data);
 
-		if(!empty($this->errorNo))
+		if (!empty($this->errorNo))
 			return null;
 		$tln             = new Teilnehmer();
 		$tln->token      = $this->token;
@@ -187,80 +337,16 @@ class API
 	}
 
 	/**
-	 * @param integer $idAktion
+	 * Wenn True gesetzt wird, wird die Entwicklungsumgebung abgefragt
 	 *
-	 * @return Aktion
+	 * @param bool $dev
 	 */
-	public function getAktion($idAktion) {
-		$data               = $this->request(['idAktion' => $idAktion]);
-		if(!empty($this->errorNo))
-			return null;
-		$aktion             = new Aktion();
-		$aktion->attributes = json_decode($data);
-
-		return $aktion;
-	}
-
-	/**
-	 * @param integer $idKampagne
-	 *
-	 * @return Kampagne
-	 */
-	public function getKampagne($idKampagne) {
-		$data                 = $this->request(['idKampagne' => $idKampagne]);
-		if(!empty($this->errorNo))
-			return null;
-		$kampagne             = new Kampagne();
-		$kampagne->attributes = json_decode($data);
-
-		return $kampagne;
-	}
-
-	/**
-	 * @param integer $idPartner
-	 *
-	 * @return Partner
-	 */
-	public function getPartner($idPartner) {
-		$data                = $this->request(['idPartner' => $idPartner]);
-		if(!empty($this->errorNo))
-			return null;
-		$partner             = new Partner();
-		$partner->attributes = json_decode($data);
-
-		return $partner;
-	}
-
-	/**
-	 * @param integer $idKunde
-	 *
-	 * @return Kunde
-	 */
-	public function getKunde($idKunde) {
-		$data              = $this->request(['idKunde' => $idKunde]);
-		if(!empty($this->errorNo))
-			return null;
-		$kunde             = new Kunde();
-		$kunde->attributes = json_decode($data);
-
-		return $kunde;
-	}
-
-	/**
-	 * @return Mandant
-	 */
-	public function getMandant() {
-		$data                = $this->request();
-		if(!empty($this->errorNo))
-			return null;
-		$mandant             = new Mandant();
-		$mandant->attributes = json_decode($data);
-
-		return $mandant;
+	public function isDev($dev = false) {
+		$this->dev = (boolean)$dev;
 	}
 
 	private function request($data = []) {
-		$this->errorNo = 0;
+		$this->errorNo      = 0;
 		$this->errorMessage = '';
 		if ($this->dev) {
 			$host = $this->host_dev;
@@ -318,9 +404,9 @@ class API
 
 		if (!curl_errno($ch)) {
 			$responseHeader = curl_getinfo($ch);
-			if($responseHeader['http_code'] != 200){
-				$data = (array)json_decode($return);
-				$this->errorNo = $responseHeader['http_code'];
+			if ($responseHeader['http_code'] != 200) {
+				$data               = (array)json_decode($return);
+				$this->errorNo      = $responseHeader['http_code'];
 				$this->errorMessage = $data['message'];
 			}
 		}
@@ -330,10 +416,83 @@ class API
 		return $return;
 	}
 
-	public function getError() {
-		return [
-			'code'=>$this->errorNo,
-			'message'=>$this->errorMessage,
-		];
+	/**
+	 * Sendet einem Teilnehmer eine E-mail
+	 * @param Teilnehmer $teilnehmer
+	 * @param            $conf
+	 */
+	public function sendMail(Teilnehmer $teilnehmer, $conf) {
+
+	}
+
+	/**
+	 * Setzt entsprechende Aktionsdaten zu einem Teilnehmer
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * $config = ['idAktion'=>$idAktion, '_id'=>'user-hash']
+	 * $teilnehmer = $api->getTeilnehmer($config);
+	 * $api->setAktionsDaten($teilnehmer, $idAktion, ['teilgenommen'=>date('d.m.Y H:i:s'])]
+	 * ```
+	 *
+	 * @param \loci\api\lib\Teilnehmer $teilnehmer - Teilnehmer Objekt
+	 * @param integer                  $idAktion - ID der Aktion
+	 * @param array                    $aktionsDaten - Array mit Daten
+	 *
+	 * @return array
+	 * * Erfolgreich: Array mit den Aktionsdaten
+	 * * Fehler: NULL
+	 */
+	public function setAktionsDaten($teilnehmer, $idAktion, $aktionsDaten) {
+		if (!$teilnehmer instanceof Teilnehmer) {
+			$this->errorNo      = 400;
+			$this->errorMessage = 'Der Parameter $teilnehmer muss ein Objekt vom Typ \loci\api\lib\Teilnehmer sein';
+
+			return null;
+		}
+		$data = $this->request(['idAktion' => $idAktion, 'aktionsDaten' => $aktionsDaten, 'tln' => $teilnehmer->attributes['_id']]);
+		if (!empty($this->errorNo))
+			return null;
+
+		return $this->getAktionsDaten($teilnehmer, $idAktion);
+	}
+
+	/**
+	 * Ändert die Teilnehmerdaten eines Teilnehmers
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * // Selektion anhand E-Mail Adresse
+	 * $config = ['idAktion'=>$idAktion, 'email'=>'example@example.com']
+	 * // Selektion anhand Hash
+	 * $config = ['idAktion'=>$idAktion, '_id'=>'user-hash']
+	 * $teilnehmer = $api->getTeilnehmer($config);
+	 * $teilnehmer->vorname = 'Max';
+	 * $api->updateTeilnehmer($teilnehmer);
+	 * ```
+	 *
+	 * @param \loci\api\lib\Teilnehmer $teilnehmer - Teilnehmer Objekt
+	 *
+	 * @return  \loci\api\lib\Teilnehmer
+	 * * Erfolgreich: Aktuelles Teilnehmer Objekt
+	 * * Fehler: NULL
+	 */
+	public function updateTeilnehmer(Teilnehmer $teilnehmer) {
+		if (!$teilnehmer instanceof Teilnehmer) {
+			$this->errorNo      = 400;
+			$this->errorMessage = 'Der Parameter $teilnehmer muss ein Objekt vom Typ \loci\api\lib\Teilnehmer sein';
+
+			return null;
+		}
+		$data = $this->request($teilnehmer->attributes);
+		if (!empty($this->errorNo))
+			return null;
+		$tln             = new Teilnehmer();
+		$tln->token      = $this->token;
+		$tln->attributes = (array)json_decode($data);
+
+		return $tln;
 	}
 }
