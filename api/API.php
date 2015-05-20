@@ -257,6 +257,7 @@ class API
 	 */
 	public function getMandant() {
 		$data = $this->request();
+
 		if (!empty($this->errorNo))
 			return null;
 		$mandant             = new Mandant();
@@ -355,6 +356,7 @@ class API
 		}
 		$ch      = curl_init();
 		$callers = debug_backtrace();
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		switch ($callers[1]['function']) {
 			case 'getAktionsDaten':
 				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&i='.$data['tln'].'&ai='.$data['idAktion']);
@@ -405,6 +407,7 @@ class API
 		}
 
 		$return = curl_exec($ch);
+
 
 		if (!curl_errno($ch)) {
 			$responseHeader = curl_getinfo($ch);
