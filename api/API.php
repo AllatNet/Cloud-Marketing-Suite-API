@@ -416,6 +416,9 @@ class API
 				$this->errorNo      = $responseHeader['http_code'];
 				$this->errorMessage = $data['message'];
 			}
+		}else{
+			$this->errorNo = curl_errno($ch);
+			$this->errorMessage = curl_error($ch);
 		}
 
 		curl_close($ch);
