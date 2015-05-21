@@ -97,7 +97,7 @@ if($aktion){
 $teilnehmer = new \loci\api\lib\Teilnehmer();
 $teilnehmer->vorname = 'Tester';
 $teilnehmer->nachname = 'Testers';
-$teilnehmer->email = 'test@example.com';
+$teilnehmer->email = 'ch@allatnet.de';
 $teilnehmerCreate = $api->createTeilnehmer($kampagne->aktionen[0]->id, $teilnehmer);
 if($teilnehmerCreate){
 	echo '<pre>';

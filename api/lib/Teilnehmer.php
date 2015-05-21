@@ -14,9 +14,17 @@ namespace loci\api\lib;
  *
  *
  * @property string    $id
+ * @property string    $anrede
+ * @property string    $titel
  * @property string    $vorname
  * @property string    $nachname
+ * @property string    $strasse
+ * @property string    $plz
+ * @property string    $ort
+ * @property string    $land
+ * @property string    $geburtstag
  * @property string    $email
+ * @property string    $optin
  */
 class Teilnehmer {
 
