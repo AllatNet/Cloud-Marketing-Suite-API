@@ -46,13 +46,13 @@ class API
 	 * Url zur API des Entwicklungssystem
 	 * @var string
 	 */
-	private $host_dev = 'https://www.fb-sites.com/development/backend/web/api';
+	private $host_dev = 'https://www.app-sharing.com/development/backend/web/api';
 
 	/**
 	 * Url zur API des Live-Systems
 	 * @var string
 	 */
-	private $host_prod = 'https://www.fb-sites.com/suite/backend/web/api';
+	private $host_prod = 'https://www.app-sharing.com/suite/backend/web/api';
 
 	/**
 	 * Token der für die Schnittstellenbefragung notwendig ist
