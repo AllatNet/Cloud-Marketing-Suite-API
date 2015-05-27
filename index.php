@@ -97,7 +97,7 @@ if($aktion){
 $teilnehmer = new \loci\api\lib\Teilnehmer();
 $teilnehmer->vorname = 'Tester';
 $teilnehmer->nachname = 'Testers';
-$teilnehmer->email = 'ch@allatnet.de';
+$teilnehmer->email = 'cw@allatnet.de';
 $teilnehmerCreate = $api->createTeilnehmer($kampagne->aktionen[0]->id, $teilnehmer);
 if($teilnehmerCreate){
 	echo '<pre>';
@@ -113,7 +113,7 @@ if($teilnehmerCreate){
 ?>
 	<h2>Teilnehmer</h2>
 <?php
-$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, 'email' => 'ch@allatnet.de']);
+$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, 'email' => 'cw@allatnet.de']);
 
 //Teilnehmer mit Hash finden
 //$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, '_id'=>'553958b71f03ad08238b4567']);
@@ -198,6 +198,7 @@ if($teilnehmer){
 	$text = "Hallo ~vorname~ ~nachname~ ~name~,
 
 	hier spricht deine Cloud-Marketing-Suite
+	<b>HTML</b>
 
 	LG Tester";
 	?>
@@ -205,12 +206,13 @@ if($teilnehmer){
 	Betreff: "<?= $subject ?><br />
 	Text: "<?= nl2br($text) ?>
 	<?php
-	/*$sendMail = $api->sendMail($teilnehmer, $aktion->id, [
+	$sendMail = $api->sendMail($teilnehmer, $aktion->id, [
 		'from'=>$from,
 		'to'=>$teilnehmer->email,
 		'subject'=>$subject,
 		'text'=>$text,
-	]);*/
+        'html'=>true,
+	]);
 	if($sendMail){
 		echo '<pre>';
 		echo 'Erfolgreich';

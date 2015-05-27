@@ -443,6 +443,8 @@ class API
 	 *    'subject'=>'Deine Registrierung',
 	 *
 	 *    'text'=>'Hallo, Deine Registrierung war erfolgreich......',
+     *
+ * 	      'html'=>false,
 	 * ]
 	 * $api->sendMail($teilnehmer, $idAktion, $mailConfig);
 	 * ```
