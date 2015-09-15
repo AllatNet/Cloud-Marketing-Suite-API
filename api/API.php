@@ -565,6 +565,7 @@ class API
 
 	/**
 	 * Sendet einem Teilnehmer eine E-mail
+     * Statt dem Beispiel "Name <to@example.com>" kann auch einfach nur eine E-Mail Adresse übergeben werden.
 	 *
 	 * Beispiel:
 	 * ```php
@@ -572,15 +573,12 @@ class API
 	 * $config = ['idAktion'=>$idAktion, '_id'=>'user-hash']
 	 * $teilnehmer = $api->getTeilnehmer($config);
 	 * $mailConfig = [
-	 *
 	 *    'from'=>'Name <from@example.com>',
-	 *
 	 *    'to'=>'Name <to@example.com>',
-	 *
+	 *    'cc'=>'Name <to@example.com>',
+	 *    'bcc'=>'Name <to@example.com>',
 	 *    'subject'=>'Deine Registrierung',
-	 *
 	 *    'text'=>'Hallo, Deine Registrierung war erfolgreich......',
-     *
  * 	      'html'=>false,
 	 * ]
 	 * $api->sendMail($teilnehmer, $idAktion, $mailConfig);

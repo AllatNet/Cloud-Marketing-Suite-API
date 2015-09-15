@@ -113,7 +113,7 @@ if($teilnehmerCreate){
 ?>
 	<h2>Teilnehmer</h2>
 <?php
-$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, 'email' => 'ch@allatnet.de']);
+$teilnehmer = $api->getTeilnehmer(['idAktion'=>23, 'email' => 'ch@allatnet.de']);
 
 //Teilnehmer mit Hash finden
 //$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, '_id'=>'553958b71f03ad08238b4567']);
@@ -209,6 +209,8 @@ if($teilnehmer){
 //	$sendMail = $api->sendMail($teilnehmer, $aktion->id, [
 //		'from'=>$from,
 //		'to'=>$teilnehmer->email,
+//        'cc'=>'andreas.joos@allatnet.de',
+//        'bcc'=>'team@allatnet.de',
 //		'subject'=>$subject,
 //		'text'=>$text,
 //        'html'=>true,
@@ -263,7 +265,7 @@ echo '</pre>';
 <?php
 
 //$teilnehmer = $api->getTeilnehmerStammdaten(['idAktion'=>104, 'email' => 'ch@allatnet.de']);
-$teilnehmer = $api->deleteTeilnehmer(['idAktion'=>21, '_id' => '55b0b69c1f03ad06608b4567']);
+//$teilnehmer = $api->deleteTeilnehmer(['idAktion'=>21, '_id' => '55b0b69c1f03ad06608b4567']);
 echo '<pre>';
 print_r($teilnehmer);
 echo '</pre>';
