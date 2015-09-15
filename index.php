@@ -254,7 +254,7 @@ echo '</pre>';
 <?php
 
 //$teilnehmer = $api->getTeilnehmerStammdaten(['idAktion'=>104, 'email' => 'ch@allatnet.de']);
-$teilnehmer = $api->getTeilnehmerStammdaten(['idAktion'=>104, '_id' => '55b0b69c1f03ad06608b4567']);
+$teilnehmer = $api->getTeilnehmerStammdaten(['idAktion'=>23, '_id' => (string)$teilnehmer->id]);
 echo '<pre>';
 print_r($teilnehmer);
 echo '</pre>';
