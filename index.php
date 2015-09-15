@@ -97,7 +97,7 @@ if($aktion){
 $teilnehmer = new \loci\api\lib\Teilnehmer();
 $teilnehmer->vorname = 'Tester';
 $teilnehmer->nachname = 'Testers';
-$teilnehmer->email = 'cw@allatnet.de';
+$teilnehmer->email = 'ch@allatnet.de';
 $teilnehmerCreate = $api->createTeilnehmer($kampagne->aktionen[0]->id, $teilnehmer);
 if($teilnehmerCreate){
 	echo '<pre>';
@@ -113,7 +113,7 @@ if($teilnehmerCreate){
 ?>
 	<h2>Teilnehmer</h2>
 <?php
-$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, 'email' => 'cw@allatnet.de']);
+$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, 'email' => 'ch@allatnet.de']);
 
 //Teilnehmer mit Hash finden
 //$teilnehmer = $api->getTeilnehmer(['idAktion'=>$kampagne->aktionen[0]->id, '_id'=>'553958b71f03ad08238b4567']);
@@ -140,7 +140,7 @@ if($teilnehmer){
 	Setze das time Attribut auf <?= $time ?>!
 	<?php
 	$teilnehmer->time = $time;
-	$update = $api->updateTeilnehmer($teilnehmer);
+//	$update = $api->updateTeilnehmer($teilnehmer);
 	if($update){
 		echo '<pre>';
 		print_r($update);
@@ -175,7 +175,7 @@ if($teilnehmer && $aktion){
 	<h2 id="SetAktionsDaten">SetAktionsDaten</h2>
 	Setze das zeit Attribut auf <?= $time ?>!
 	<?php
-	$setAktionsDaten = $api->setAktionsDaten($teilnehmer, $aktion->id, ['testaktion'=>'testwert', 'zeit'=>$time]);
+//	$setAktionsDaten = $api->setAktionsDaten($teilnehmer, $aktion->id, ['testaktion'=>'testwert', 'zeit'=>$time]);
 	if($setAktionsDaten){
 		echo '<pre>';
 		print_r($setAktionsDaten);
@@ -206,23 +206,66 @@ if($teilnehmer){
 	Betreff: "<?= $subject ?><br />
 	Text: "<?= nl2br($text) ?>
 	<?php
-	$sendMail = $api->sendMail($teilnehmer, $aktion->id, [
-		'from'=>$from,
-		'to'=>$teilnehmer->email,
-		'subject'=>$subject,
-		'text'=>$text,
-        'html'=>true,
-	]);
-	if($sendMail){
-		echo '<pre>';
-		echo 'Erfolgreich';
-		echo '</pre>';
-	}else{
-		echo '<pre>';
-		echo 'Fehler';
-		echo '</pre>';
-	}
+//	$sendMail = $api->sendMail($teilnehmer, $aktion->id, [
+//		'from'=>$from,
+//		'to'=>$teilnehmer->email,
+//		'subject'=>$subject,
+//		'text'=>$text,
+//        'html'=>true,
+//	]);
+//	if($sendMail){
+//		echo '<pre>';
+//		echo 'Erfolgreich';
+//		echo '</pre>';
+//	}else{
+//		echo '<pre>';
+//		echo 'Fehler';
+//		echo '</pre>';
+//	}
 }
 
+
+?>
+
+<h1>Geänderte Teilnehmer-Hashes</h1>
+<?php
+
+$config = [
+	'idAktion'=>$aktion->id,
+	'from'=>'1422748799',
+];
+
+$hashes = $api->getTeilnehmerChanged($config);
+echo '<pre>';
+print_r($api->getError());
+echo '</pre>';
+
+echo '<pre>';
+print_r($hashes);
+echo '</pre>';
+
+
+?>
+
+
+<h1>Teilnehmer-Stammdaten</h1>
+<?php
+
+//$teilnehmer = $api->getTeilnehmerStammdaten(['idAktion'=>104, 'email' => 'ch@allatnet.de']);
+$teilnehmer = $api->getTeilnehmerStammdaten(['idAktion'=>104, '_id' => '55b0b69c1f03ad06608b4567']);
+echo '<pre>';
+print_r($teilnehmer);
+echo '</pre>';
+
+?>
+
+<h1>Teilnehmer-Löschen</h1>
+<?php
+
+//$teilnehmer = $api->getTeilnehmerStammdaten(['idAktion'=>104, 'email' => 'ch@allatnet.de']);
+$teilnehmer = $api->deleteTeilnehmer(['idAktion'=>21, '_id' => '55b0b69c1f03ad06608b4567']);
+echo '<pre>';
+print_r($teilnehmer);
+echo '</pre>';
 
 ?>

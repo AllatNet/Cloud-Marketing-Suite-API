@@ -338,6 +338,131 @@ class API
 	}
 
 	/**
+	 * Holt die Teilnehmerdaten eines angegebenen Teilnehmers unter Berücksichtigung dass der Teilnehmer unter dem Partner zu finden ist.
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * // Selektion anhand E-Mail Adresse
+	 * $config = ['idAktion'=>$idAktion, 'email'=>'example@example.com']
+	 * // Selektion anhand Hash
+	 * $config = ['idAktion'=>$idAktion, '_id'=>'user-hash']
+	 * $teilnehmer = $api->getTeilnehmer($config);
+	 * ```
+	 *
+	 * @param array $data - Config Array des Teilnehmers, mindestens jedoch zwei Parameter<br />
+	 *                    Dabei ist idAktion Pflicht!<br />
+	 *                    ['idAktion'=>$idAktion, 'email'=>'example@example.com']
+	 *
+	 * @return \loci\api\lib\Teilnehmer
+	 * * Erfolgreich: Aktuelles Teilnehmer Objekt
+	 * * Fehler: NULL
+	 */
+	public function getTeilnehmerStammdaten($data) {
+		if (empty($data['idAktion'])) {
+			$this->errorNo      = 400;
+			$this->errorMessage = 'Ein Teilnehmer kann nur mit idAktion gefunden werden';
+
+			return null;
+		}
+		if (count($data) < 2) {
+			$this->errorNo      = 400;
+			$this->errorMessage = 'Ein Teilnehmer kann nur mit mindestens zwei Attributen gesucht werden';
+
+			return null;
+		}
+
+		$data = $this->request($data);
+
+		if (!empty($this->errorNo))
+			return null;
+		$tln             = new Teilnehmer();
+		$tln->token      = $this->token;
+		$tln->attributes = json_decode($data);
+
+		return $tln;
+	}
+
+	/**
+	 * Holt alle Teilnehmer-Hash'es die im gewählten Zeitraum geändert wurden
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * // Selektion aller Teilnehmer seit 01.01.2015 -> 1420070400
+	 * $config = ['idAktion'=>$idAktion, 'from'=>'1420070400']
+	 * // Selektion aller geänderten Teilnehmer zwischem dem 01.01.2015 und dem 31.01.2015
+	 * $config = ['idAktion'=>$idAktion, 'from'=>'1420070400', 'to'=>'1422748799']
+	 * $teilnehmer = $api->getTeilnehmerChanged($config);
+	 * ```
+	 *
+	 * @param array $data - Config Array des Teilnehmers, mindestens jedoch zwei Parameter<br />
+	 *                    Dabei ist idAktion Pflicht!<br />
+	 *                    ['idAktion'=>$idAktion, 'email'=>'example@example.com']
+	 *
+	 * @return array
+	 * * Array mit Hashes
+	 * * Fehler: NULL
+	 */
+	public function getTeilnehmerChanged($data) {
+		if (empty($data['idAktion'])) {
+			$this->errorNo      = 400;
+			$this->errorMessage = 'Ein Teilnehmer kann nur mit idAktion gefunden werden';
+
+			return null;
+		}
+		if (empty($data['from'])) {
+			$this->errorNo      = 400;
+			$this->errorMessage = 'Datum von muss gesetzt und eine Zahl sein';
+
+			return null;
+		}
+
+		$data = $this->request($data);
+
+		if (!empty($this->errorNo))
+			return null;
+
+        return (array)json_decode($data);
+	}
+
+	/**
+	 * Löscht einen Teilnehmer in der Cloud-Marketing-Suite
+	 *
+	 * Beispiel:
+	 * ```php
+	 * $api = new API("my-secret-token");
+	 * // Löschung anhand Hash
+	 * $config = ['idAktion'=>$idAktion, '_id'=>'user-hash']
+	 * $return = $api->deleteTeilnehmer($config);
+	 * ```
+	 *
+	 * @param array $data - Konfigurations Array für die Löschung des Teilnehmers, darf nur idAktion und _id enthalten.
+	 *
+	 * @return bool|null
+	 */
+	public function deleteTeilnehmer($data) {
+		if (empty($data['idAktion'])) {
+			$this->errorNo      = 400;
+			$this->errorMessage = 'Ein Teilnehmer kann nur mit idAktion gefunden werden';
+
+			return null;
+		}
+		if (empty($data['_id'])) {
+			$this->errorNo      = 400;
+			$this->errorMessage = 'Ein Teilnehmer kann nur über seinen Hash gelöscht werden';
+
+			return null;
+		}
+
+		$data = $this->request($data);
+
+		if (!empty($this->errorNo))
+			return null;
+		return true;
+	}
+
+	/**
 	 * Wenn True gesetzt wird, wird die Entwicklungsumgebung abgefragt
 	 *
 	 * @param bool $dev
@@ -375,6 +500,18 @@ class API
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'getTeilnehmer':
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				break;
+			case 'deleteTeilnehmer':
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				break;
+			case 'getTeilnehmerStammdaten':
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				break;
+			case 'getTeilnehmerChanged':
 				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data));
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
