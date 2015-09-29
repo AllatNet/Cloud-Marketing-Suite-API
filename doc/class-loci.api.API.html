@@ -92,7 +92,7 @@
 		<b>Namespace:</b> <a href="namespace-loci.html">loci</a>\<a href="namespace-loci.api.html">api</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-loci.api.API.html#23-530" title="Go to source code">API.php</a>
+			<b>Located at</b> <a href="source-class-loci.api.API.html#23-673" title="Go to source code">API.php</a>
 		<br>
 	</div>
 
@@ -427,7 +427,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_getMandant">#</a>
-			<code><a href="source-class-loci.api.API.html#246-266" title="Go to source code">getMandant</a>( )</code>
+			<code><a href="source-class-loci.api.API.html#246-267" title="Go to source code">getMandant</a>( )</code>
 
 
 			<div class="description detailed">
@@ -465,7 +465,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_getPartner">#</a>
-			<code><a href="source-class-loci.api.API.html#268-291" title="Go to source code">getPartner</a>( <span>integer <var>$idPartner</var></span> )</code>
+			<code><a href="source-class-loci.api.API.html#269-292" title="Go to source code">getPartner</a>( <span>integer <var>$idPartner</var></span> )</code>
 
 
 			<div class="description detailed">
@@ -510,7 +510,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_getTeilnehmer">#</a>
-			<code><a href="source-class-loci.api.API.html#293-337" title="Go to source code">getTeilnehmer</a>( <span>array <var>$data</var></span> )</code>
+			<code><a href="source-class-loci.api.API.html#294-338" title="Go to source code">getTeilnehmer</a>( <span>array <var>$data</var></span> )</code>
 
 
 			<div class="description detailed">
@@ -550,6 +550,152 @@
 			</div>
 			</div></td>
 		</tr>
+		<tr data-order="getTeilnehmerStammdaten" id="_getTeilnehmerStammdaten">
+
+			<td class="attributes"><code>
+				 public 
+				<code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code>
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getTeilnehmerStammdaten">#</a>
+			<code><a href="source-class-loci.api.API.html#340-384" title="Go to source code">getTeilnehmerStammdaten</a>( <span>array <var>$data</var></span> )</code>
+
+
+			<div class="description detailed">
+				<p>Holt die Teilnehmerdaten eines angegebenen Teilnehmers unter Berücksichtigung dass der Teilnehmer unter dem Partner zu finden ist.</p>
+
+<p>Beispiel:</p>
+
+<pre><span class="php-var">$api</span> = <span class="php-keyword1">new</span> API(<span class="php-quote">&quot;my-secret-token&quot;</span>);
+<span class="php-comment">// Selektion anhand E-Mail Adresse</span>
+<span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'email'</span>=&gt;<span class="php-quote">'example@example.com'</span>]
+<span class="php-comment">// Selektion anhand Hash</span>
+<span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'_id'</span>=&gt;<span class="php-quote">'user-hash'</span>]
+<span class="php-var">$teilnehmer</span> = <span class="php-var">$api</span>-&gt;getTeilnehmer(<span class="php-var">$config</span>);</pre>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$data</var></dt>
+						<dd><ul>
+<li>Config Array des Teilnehmers, mindestens jedoch zwei Parameter<br />
+               Dabei ist idAktion Pflicht!<br />
+               ['idAktion'=>$idAktion, 'email'=>'example@example.com']</li>
+</ul></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code><br><ul>
+<li>Erfolgreich: Aktuelles Teilnehmer Objekt</li>
+<li>Fehler: NULL</li>
+</ul>
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="getTeilnehmerChanged" id="_getTeilnehmerChanged">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_getTeilnehmerChanged">#</a>
+			<code><a href="source-class-loci.api.API.html#386-427" title="Go to source code">getTeilnehmerChanged</a>( <span>array <var>$data</var></span> )</code>
+
+
+			<div class="description detailed">
+				<p>Holt alle Teilnehmer-Hash'es die im gewählten Zeitraum geändert wurden</p>
+
+<p>Beispiel:</p>
+
+<pre><span class="php-var">$api</span> = <span class="php-keyword1">new</span> API(<span class="php-quote">&quot;my-secret-token&quot;</span>);
+<span class="php-comment">// Selektion aller Teilnehmer seit 01.01.2015 -&gt; 1420070400</span>
+<span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'from'</span>=&gt;<span class="php-quote">'1420070400'</span>]
+<span class="php-comment">// Selektion aller geänderten Teilnehmer zwischem dem 01.01.2015 und dem 31.01.2015</span>
+<span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'from'</span>=&gt;<span class="php-quote">'1420070400'</span>, <span class="php-quote">'to'</span>=&gt;<span class="php-quote">'1422748799'</span>]
+<span class="php-var">$teilnehmer</span> = <span class="php-var">$api</span>-&gt;getTeilnehmerChanged(<span class="php-var">$config</span>);</pre>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$data</var></dt>
+						<dd><ul>
+<li>Config Array des Teilnehmers, mindestens jedoch zwei Parameter<br />
+               Dabei ist idAktion Pflicht!<br />
+               ['idAktion'=>$idAktion, 'email'=>'example@example.com']</li>
+</ul></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						array<br><ul>
+<li>Array mit Hashes</li>
+<li>Fehler: NULL</li>
+</ul>
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="deleteTeilnehmer" id="_deleteTeilnehmer">
+
+			<td class="attributes"><code>
+				 public 
+				boolean|null
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_deleteTeilnehmer">#</a>
+			<code><a href="source-class-loci.api.API.html#429-463" title="Go to source code">deleteTeilnehmer</a>( <span>array <var>$data</var></span> )</code>
+
+
+			<div class="description detailed">
+				<p>Löscht einen Teilnehmer in der Cloud-Marketing-Suite</p>
+
+<p>Beispiel:</p>
+
+<pre><span class="php-var">$api</span> = <span class="php-keyword1">new</span> API(<span class="php-quote">&quot;my-secret-token&quot;</span>);
+<span class="php-comment">// Löschung anhand Hash</span>
+<span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'_id'</span>=&gt;<span class="php-quote">'user-hash'</span>]
+<span class="php-var">$return</span> = <span class="php-var">$api</span>-&gt;deleteTeilnehmer(<span class="php-var">$config</span>);</pre>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$data</var></dt>
+						<dd><ul>
+<li>Konfigurations Array für die Löschung des Teilnehmers, darf nur idAktion und _id enthalten.</li>
+</ul></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean|null
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
 		<tr data-order="isDev" id="_isDev">
 
 			<td class="attributes"><code>
@@ -561,7 +707,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_isDev">#</a>
-			<code><a href="source-class-loci.api.API.html#339-346" title="Go to source code">isDev</a>( <span>boolean <var>$dev</var> = <span class="php-keyword1">false</span></span> )</code>
+			<code><a href="source-class-loci.api.API.html#465-472" title="Go to source code">isDev</a>( <span>boolean <var>$dev</var> = <span class="php-keyword1">false</span></span> )</code>
 
 
 			<div class="description detailed">
@@ -592,22 +738,19 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_sendMail">#</a>
-			<code><a href="source-class-loci.api.API.html#423-458" title="Go to source code">sendMail</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span>, <span>array <var>$conf</var></span> )</code>
+			<code><a href="source-class-loci.api.API.html#566-601" title="Go to source code">sendMail</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span>, <span>array <var>$conf</var></span> )</code>
 
 
 			<div class="description detailed">
-				<p>Sendet einem Teilnehmer eine E-mail</p>
+				<p>Sendet einem Teilnehmer eine E-mail
+Statt dem Beispiel "Name <a href="&#109;a&#105;l&#116;o&#x3a;t&#x6f;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#x6d;">t&#x6f;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#x6d;</a>" kann auch einfach nur eine E-Mail Adresse übergeben werden.</p>
 
 <p>Beispiel:</p>
 
 <pre><span class="php-var">$api</span> = <span class="php-keyword1">new</span> API(<span class="php-quote">&quot;my-secret-token&quot;</span>);
 <span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'_id'</span>=&gt;<span class="php-quote">'user-hash'</span>]
 <span class="php-var">$teilnehmer</span> = <span class="php-var">$api</span>-&gt;getTeilnehmer(<span class="php-var">$config</span>);
-<span class="php-var">$mailConfig</span> = [
- <span class="php-quote">'from'</span>=&gt;<span class="php-quote">'Name &lt;from@example.com&gt;'</span>,
- <span class="php-quote">'to'</span>=&gt;<span class="php-quote">'Name &lt;to@example.com&gt;'</span>,
- <span class="php-quote">'subject'</span>=&gt;<span class="php-quote">'Deine Registrierung'</span>,
- <span class="php-quote">'text'</span>=&gt;<span class="php-quote">'Hallo, Deine Registrierung war erfolgreich......'</span>,
+<span class="php-var">$mailConfig</span> = [ <span class="php-quote">'from'</span>=&gt;<span class="php-quote">'Name &lt;from@example.com&gt;'</span>, <span class="php-quote">'to'</span>=&gt;<span class="php-quote">'Name &lt;to@example.com&gt;'</span>, <span class="php-quote">'cc'</span>=&gt;<span class="php-quote">'Name &lt;to@example.com&gt;'</span>, <span class="php-quote">'bcc'</span>=&gt;<span class="php-quote">'Name &lt;to@example.com&gt;'</span>, <span class="php-quote">'subject'</span>=&gt;<span class="php-quote">'Deine Registrierung'</span>, <span class="php-quote">'text'</span>=&gt;<span class="php-quote">'Hallo, Deine Registrierung war erfolgreich......'</span>, <span class="php-quote">'html'</span>=&gt;<span class="php-keyword1">false</span>,
 ]
 <span class="php-var">$api</span>-&gt;sendMail(<span class="php-var">$teilnehmer</span>, <span class="php-var">$idAktion</span>, <span class="php-var">$mailConfig</span>);</pre>
 
@@ -647,7 +790,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_setAktionsDaten">#</a>
-			<code><a href="source-class-loci.api.API.html#460-491" title="Go to source code">setAktionsDaten</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span>, <span>array <var>$aktionsDaten</var></span> )</code>
+			<code><a href="source-class-loci.api.API.html#603-634" title="Go to source code">setAktionsDaten</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span>, <span>integer <var>$idAktion</var></span>, <span>array <var>$aktionsDaten</var></span> )</code>
 
 
 			<div class="description detailed">
@@ -702,7 +845,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_updateTeilnehmer">#</a>
-			<code><a href="source-class-loci.api.API.html#493-529" title="Go to source code">updateTeilnehmer</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span> )</code>
+			<code><a href="source-class-loci.api.API.html#636-672" title="Go to source code">updateTeilnehmer</a>( <span><code><a href="class-loci.api.lib.Teilnehmer.html">loci\api\lib\Teilnehmer</a></code> <var>$teilnehmer</var></span> )</code>
 
 
 			<div class="description detailed">
