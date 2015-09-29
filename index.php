@@ -385,8 +385,14 @@
             $teilnehmerSendmail = $api->getTeilnehmer(['idAktion' => 117, 'email' => 'team@allatnet.de']);
             $teilnehmerSendmailSended = $api->sendMail($teilnehmerSendmail, 117, [
                 'from'=>'Loci <kundenbetreuung@loci.biz>',
-                'cc'=>'AllatNet Info <info@allatnet.de>',
-                'bcc'=>'Christian Hoefer <ch@allatnet.de>',
+                'cc'=>[
+                    'AllatNet Info <info@allatnet.de>',
+                    'AllatNet Team <team@allatnet.de>',
+                ],
+                'bcc'=>[
+                    'Christian Hoefer <ch@allatnet.de>',
+                    'Christian Hoefer Team <team@allatnet.de>',
+                ],
                 'to'=>$teilnehmerSendmail->email,
                 'subject'=>'API-Test E-Mail',
                 'text'=>'Test E-Mail des aktuell laufenden Tests auf cmsapi.we-dev.de',
