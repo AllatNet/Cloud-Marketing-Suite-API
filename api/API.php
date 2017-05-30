@@ -162,7 +162,7 @@ class API
 		if (!empty($this->errorNo))
 			return null;
 
-		return (array)json_decode($data);
+		return json_decode($data, true);
 	}
 
 	/**
