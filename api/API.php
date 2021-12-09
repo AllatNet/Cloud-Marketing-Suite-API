@@ -1,5 +1,17 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Christian Höfer
+ * Date: 20.04.2015
+ * Time: 13:03
+ *
+ * @version 1.0.0
+ */
+
+
 namespace loci\api;
+
+
 use loci\api\lib\Aktion;
 use loci\api\lib\ApiException;
 use loci\api\lib\Kampagne;
@@ -7,7 +19,6 @@ use loci\api\lib\Kunde;
 use loci\api\lib\Mandant;
 use loci\api\lib\Partner;
 use loci\api\lib\Teilnehmer;
-use loci\api\lib\Test;
 
 class API
 {
@@ -32,6 +43,12 @@ class API
 	private $errorNo = 0;
 
 	/**
+	 * Url zur API des Entwicklungssystem
+	 * @var string
+	 */
+	private $host_dev = 'https://www.app-sharing.com/development/backend/web/api';
+
+	/**
 	 * Url zur API des Live-Systems
 	 * @var string
 	 */
@@ -50,7 +67,6 @@ class API
 	 * @param string $token - Token ist von Ihrem Cloud-Marketing-Suite Mandanten zu erhalten
 	 */
 	public function __construct($token) {
-		require_once(__DIR__.'/lib/Test.php');
 		require_once(__DIR__.'/lib/Aktion.php');
 		require_once(__DIR__.'/lib/Kampagne.php');
 		require_once(__DIR__.'/lib/Kunde.php');
@@ -146,7 +162,7 @@ class API
 		if (!empty($this->errorNo))
 			return null;
 
-		return (array)json_decode($data);
+		return json_decode($data, true);
 	}
 
 	/**
@@ -455,75 +471,80 @@ class API
 		$this->dev = (boolean)$dev;
 	}
 
-	public function startTest(){
-		return new Test();
-	}
-
 	private function request($data = []) {
 		$this->errorNo      = 0;
 		$this->errorMessage = '';
-        $host = $this->host_prod;
+		if ($this->dev) {
+			$host = $this->host_dev;
+		} else {
+			$host = $this->host_prod;
+		}
 		$ch      = curl_init();
 		$callers = debug_backtrace();
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		switch ($callers[1]['function']) {
 			case 'getAktionsDaten':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&i='.$data['tln'].'&ai='.$data['idAktion'];
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&i='.$data['tln'].'&ai='.$data['idAktion']);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'setAktionsDaten':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&i='.$data['tln'].'&ai='.$data['idAktion'].'&d='.urlencode(json_encode($data['aktionsDaten']));
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&i='.$data['tln'].'&ai='.$data['idAktion'].'&d='.urlencode(json_encode($data['aktionsDaten'])));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'updateTeilnehmer':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&i='.$data['_id'].'&d='.urlencode(json_encode($data));
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&i='.$data['_id'].'&d='.urlencode(json_encode($data)));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'createTeilnehmer':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.urlencode(json_encode($data));
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.urlencode(json_encode($data)));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'getTeilnehmer':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data);
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'deleteTeilnehmer':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data);
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'getTeilnehmerStammdaten':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data);
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'getTeilnehmerChanged':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data);
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.json_encode($data));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'getAktion':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&a='.$data['idAktion'];
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&a='.$data['idAktion']);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'getKampagne':
-			    $link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&k='.$data['idKampagne'];
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&k='.$data['idKampagne']);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'getPartner':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&p='.$data['idPartner'];
-								break;
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&p='.$data['idPartner']);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				break;
 			case 'getMandant':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token;
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'getKunde':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&k='.$data['idKunde'];
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&k='.$data['idKunde']);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			case 'sendMail':
-				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.urlencode(json_encode($data));
+				curl_setopt($ch, CURLOPT_URL, $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&d='.urlencode(json_encode($data)));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				break;
 			default:
 				echo $callers[1]['function'];
 		}
 
-		if(isset($link)){
-		    if($this->dev){
-                echo '<hr><p>API-Anfrage: <a href="'.$link.'" target="_blank">'.$link.'</a></p>';
-            }
-
-
-            curl_setopt($ch, CURLOPT_URL, $link);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        }
-
 		$return = curl_exec($ch);
+
 
 		if (!curl_errno($ch)) {
 			$responseHeader = curl_getinfo($ch);

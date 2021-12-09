@@ -1,11 +1,11 @@
 <?php
 /**
- * Loci - Cloud Marketing Suite API
- * Lizenz: https://www.apache.org/licenses/LICENSE-2.0
- * Version: 1.3.0
- * Author: AllatNet Internetsysteme
- * Link: https://fb-sites.com/api/
+ * Created by PhpStorm.
+ * User: Christian Höfer
+ * Date: 20.04.2015
+ * Time: 13:09
  */
+
 namespace loci\api\lib;
 
 /**

@@ -1,12 +1,13 @@
 <?php
 /**
- * Loci - Cloud Marketing Suite API
- * Lizenz: https://www.apache.org/licenses/LICENSE-2.0
- * Version: 1.3.0
- * Author: AllatNet Internetsysteme
- * Link: https://fb-sites.com/api/
+ * Created by PhpStorm.
+ * User: Christian Höfer
+ * Date: 18.05.2015
+ * Time: 14:52
  */
+
 namespace loci\api\lib;
+
 
 class ApiException extends \Exception{
 

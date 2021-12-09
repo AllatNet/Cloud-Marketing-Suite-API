@@ -14,7 +14,7 @@
 	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a href="index.html" class="navbar-brand"><img src="http://fb-sites.com/img/banner/logobanner.png" style="margin-top: -5px;"></a>
+				<a href="index.html" class="navbar-brand"><img src="http://fb-sites.com/suite/backend/web/images/logobanner.png" style="margin-top: -5px;"></a>
 			</div>
 			<div class="collapse navbar-collapse">
 
@@ -523,8 +523,6 @@
 <span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'email'</span>=&gt;<span class="php-quote">'example@example.com'</span>]
 <span class="php-comment">// Selektion anhand Hash</span>
 <span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'_id'</span>=&gt;<span class="php-quote">'user-hash'</span>]
-<span class="php-comment">// Auch gelöschte Teilnehmer einsehen</span>
-<span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'_id'</span>=&gt;<span class="php-quote">'user-hash'</span>, <span class="php-quote">'deleted'</span>=&gt;<span class="php-quote">true</span>]
 <span class="php-var">$teilnehmer</span> = <span class="php-var">$api</span>-&gt;getTeilnehmer(<span class="php-var">$config</span>);</pre>
 
 
@@ -676,8 +674,6 @@
 <pre><span class="php-var">$api</span> = <span class="php-keyword1">new</span> API(<span class="php-quote">&quot;my-secret-token&quot;</span>);
 <span class="php-comment">// Löschung anhand Hash</span>
 <span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'_id'</span>=&gt;<span class="php-quote">'user-hash'</span>]
-<span class="php-comment">// DSGVO konforme Löschung (nicht wiederherstellbar) anhand des Hash</span>
-<span class="php-var">$config</span> = [<span class="php-quote">'idAktion'</span>=&gt;<span class="php-var">$idAktion</span>, <span class="php-quote">'_id'</span>=&gt;<span class="php-quote">'user-hash'</span>, <span class="php-quote">'safe'</span>=&gt;<span class="php-quote">true</span>]
 <span class="php-var">$return</span> = <span class="php-var">$api</span>-&gt;deleteTeilnehmer(<span class="php-var">$config</span>);</pre>
 
 
@@ -715,7 +711,7 @@
 
 
 			<div class="description detailed">
-				<p>Wenn True gesetzt wird, werden hilfreiche Debugging-Informationen angezeigt</p>
+				<p>Wenn True gesetzt wird, wird die Entwicklungsumgebung abgefragt</p>
 
 
 					<h4>Parameters</h4>
