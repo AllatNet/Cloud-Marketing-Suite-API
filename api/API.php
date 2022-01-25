@@ -143,6 +143,12 @@ class API
 			return null;
 		}
 		$data = $this->request(['idAktion' => $idAktion, 'tln' => $teilnehmer->attributes['_id']]);
+
+		if( $data == 0 ) {
+			$this->errorNo      = 404;
+			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
+		}
+
 		if (!empty($this->errorNo))
 			return null;
 
@@ -312,6 +318,11 @@ class API
 
 		$data = $this->request($data);
 
+		if( $data == 0 ) {
+			$this->errorNo      = 404;
+			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
+		}
+
 		if (!empty($this->errorNo))
 			return null;
 		$tln             = new Teilnehmer();
@@ -343,6 +354,7 @@ class API
 	 * * Fehler: NULL
 	 */
 	public function getTeilnehmerStammdaten($data) {
+
 		if (empty($data['idAktion'])) {
 			$this->errorNo      = 400;
 			$this->errorMessage = 'Ein Teilnehmer kann nur mit idAktion gefunden werden';
@@ -358,8 +370,14 @@ class API
 
 		$data = $this->request($data);
 
+		if( $data == 0 ) {
+			$this->errorNo      = 404;
+			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
+		}
+
 		if (!empty($this->errorNo))
 			return null;
+
 		$tln             = new Teilnehmer();
 		$tln->token      = $this->token;
 		$tln->attributes = json_decode($data);
@@ -404,10 +422,15 @@ class API
 
 		$data = $this->request($data);
 
+		if( $data == 0 ) {
+			$this->errorNo      = 404;
+			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
+		}
+
 		if (!empty($this->errorNo))
 			return null;
 
-        return (array)json_decode($data);
+		return (array)json_decode($data);
 	}
 
 	/**
@@ -441,8 +464,14 @@ class API
 
 		$data = $this->request($data);
 
+		if( $data == 0 ) {
+			$this->errorNo      = 404;
+			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
+		}
+
 		if (!empty($this->errorNo))
 			return null;
+
 		return true;
 	}
 
@@ -462,7 +491,7 @@ class API
 	private function request($data = []) {
 		$this->errorNo      = 0;
 		$this->errorMessage = '';
-        $host = $this->host_prod;
+		$host = $this->host_prod;
 		$ch      = curl_init();
 		$callers = debug_backtrace();
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -495,11 +524,11 @@ class API
 				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&a='.$data['idAktion'];
 				break;
 			case 'getKampagne':
-			    $link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&k='.$data['idKampagne'];
+				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&k='.$data['idKampagne'];
 				break;
 			case 'getPartner':
 				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token.'&p='.$data['idPartner'];
-								break;
+				break;
 			case 'getMandant':
 				$link = $host.'/'.strtolower($callers[1]['function']).'?t='.$this->token;
 				break;
@@ -514,14 +543,14 @@ class API
 		}
 
 		if(isset($link)){
-		    if($this->dev){
-                echo '<hr><p>API-Anfrage: <a href="'.$link.'" target="_blank">'.$link.'</a></p>';
-            }
+			if($this->dev){
+				echo '<hr><p>API-Anfrage: <a href="'.$link.'" target="_blank">'.$link.'</a></p>';
+			}
 
 
-            curl_setopt($ch, CURLOPT_URL, $link);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        }
+			curl_setopt($ch, CURLOPT_URL, $link);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		}
 
 		$return = curl_exec($ch);
 
@@ -544,7 +573,7 @@ class API
 
 	/**
 	 * Sendet einem Teilnehmer eine E-mail
-     * Statt dem Beispiel "Name <to@example.com>" kann auch einfach nur eine E-Mail Adresse übergeben werden.
+	 * Statt dem Beispiel "Name <to@example.com>" kann auch einfach nur eine E-Mail Adresse übergeben werden.
 	 *
 	 * Beispiel:
 	 * ```php
@@ -558,7 +587,7 @@ class API
 	 *    'bcc'=>'Name <to@example.com>',
 	 *    'subject'=>'Deine Registrierung',
 	 *    'text'=>'Hallo, Deine Registrierung war erfolgreich......',
- * 	      'html'=>false,
+	 * 	      'html'=>false,
 	 * ]
 	 * $api->sendMail($teilnehmer, $idAktion, $mailConfig);
 	 * ```
@@ -606,6 +635,12 @@ class API
 			return null;
 		}
 		$data = $this->request(['idAktion' => $idAktion, 'aktionsDaten' => $aktionsDaten, 'tln' => $teilnehmer->attributes['_id']]);
+
+		if( $data == 0 ) {
+			$this->errorNo      = 404;
+			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
+		}
+
 		if (!empty($this->errorNo))
 			return null;
 
@@ -641,6 +676,12 @@ class API
 			return null;
 		}
 		$data = $this->request($teilnehmer->attributes);
+
+		if( $data == 0 ) {
+			$this->errorNo      = 404;
+			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
+		}
+
 		if (!empty($this->errorNo))
 			return null;
 		$tln             = new Teilnehmer();
