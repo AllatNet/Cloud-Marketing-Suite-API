@@ -1,7 +1,6 @@
 <?php
 namespace loci\api;
 use loci\api\lib\Aktion;
-use loci\api\lib\ApiException;
 use loci\api\lib\Kampagne;
 use loci\api\lib\Kunde;
 use loci\api\lib\Mandant;
@@ -144,7 +143,7 @@ class API
 		}
 		$data = $this->request(['idAktion' => $idAktion, 'tln' => $teilnehmer->attributes['_id']]);
 
-		if( $data == 0 ) {
+		if( $this->errorNo === 500 ) {
 			$this->errorNo      = 404;
 			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
 		}
@@ -318,7 +317,7 @@ class API
 
 		$data = $this->request($data);
 
-		if( $data == 0 ) {
+		if( $this->errorNo === 500 ) {
 			$this->errorNo      = 404;
 			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
 		}
@@ -370,7 +369,7 @@ class API
 
 		$data = $this->request($data);
 
-		if( $data == 0 ) {
+		if( $this->errorNo === 500 ) {
 			$this->errorNo      = 404;
 			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
 		}
@@ -422,7 +421,7 @@ class API
 
 		$data = $this->request($data);
 
-		if( $data == 0 ) {
+		if( $this->errorNo === 500 ) {
 			$this->errorNo      = 404;
 			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
 		}
@@ -464,7 +463,7 @@ class API
 
 		$data = $this->request($data);
 
-		if( $data == 0 ) {
+		if( $this->errorNo === 500 ) {
 			$this->errorNo      = 404;
 			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
 		}
@@ -554,6 +553,11 @@ class API
 
 		$return = curl_exec($ch);
 
+		if($return === "0"){
+			$this->errorNo = 500;
+			$this->errorMessage = 'NULL';
+		}
+
 		if (!curl_errno($ch)) {
 			$responseHeader = curl_getinfo($ch);
 			if ($responseHeader['http_code'] != 200) {
@@ -636,7 +640,7 @@ class API
 		}
 		$data = $this->request(['idAktion' => $idAktion, 'aktionsDaten' => $aktionsDaten, 'tln' => $teilnehmer->attributes['_id']]);
 
-		if( $data == 0 ) {
+		if( $this->errorNo === 500 ) {
 			$this->errorNo      = 404;
 			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
 		}
@@ -677,7 +681,7 @@ class API
 		}
 		$data = $this->request($teilnehmer->attributes);
 
-		if( $data == 0 ) {
+		if( $this->errorNo === 500 ) {
 			$this->errorNo      = 404;
 			$this->errorMessage = 'Es wurde kein Teilnehmer gefunden.';
 		}
